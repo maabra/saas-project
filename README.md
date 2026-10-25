@@ -55,6 +55,14 @@ Efficiency and quality are personal 1–5 self-ratings, not an automatic perform
 
 ## Data and troubleshooting
 
+### Pages setup fails with “Get Pages site failed” / “Not Found”
+
+This error comes from the Pages API after the workflow has parsed. Open the repository's **Settings → Pages**, then set **Build and deployment → Source → GitHub Actions**. For this repository: [Pages settings](https://github.com/maabra/saas-project/settings/pages). After saving, open **Actions → Deploy Orbit to GitHub Pages → the failed run → Re-run all jobs**. No replacement workflow template is needed.
+
+Do not add `enablement: true` alone: automatic enablement requires a separate privileged token; the workflow's default `GITHUB_TOKEN` cannot create the Pages site. The workflow already has `pages: write` and `id-token: write` for deployment. If Pages settings are unavailable, check repository admin/maintainer access and whether your plan supports Pages for the repository's visibility. If Pages is already enabled, confirm this workflow is running in the same repository rather than a fork.
+
+The workflow includes an explicit GitHub Actions YAML schema for compatible editors and quotes the `on` key for compatibility with generic YAML parsers. A red failed-run indicator on GitHub means the run failed, not necessarily that the YAML is invalid. If the editor still underlines a line, inspect its exact message in **View → Problems**; editor diagnostics are separate from the Pages API failure.
+
 - Tasks, projects, ratings, and comments are saved in your browser's local storage on the current device and site address. Clearing browser data, using private browsing, switching browsers/devices, or changing the deployed site URL may make that workspace unavailable. Export a JSON backup before changing browsers or deployment URLs.
 - If the app cannot read saved data, it logs the error and opens the demo instead. Use **Import backup** to restore a saved JSON file. If the data is corrupted and there is no backup, **Reset demo** gives you a clean workspace.
 - If save changes do not persist, allow site data in the browser and make sure private-browsing restrictions or storage limits are not blocking local storage.

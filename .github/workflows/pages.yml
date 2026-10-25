@@ -1,6 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# One-time setup: repository Settings > Pages > Source > GitHub Actions.
+# configure-pages cannot enable a new Pages site with the default GITHUB_TOKEN.
 name: Deploy Orbit to GitHub Pages
 
-on:
+'on':
   push:
     branches: [main]
   workflow_dispatch:
@@ -23,14 +26,14 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
       - name: Set up Node for lab checks
         uses: actions/setup-node@v4
         with:
           node-version: '22'
       - name: Check learning engine
         run: node --test tests/lab-engine.test.cjs
+      - name: Configure GitHub Pages (requires Pages enabled in repository Settings)
+        uses: actions/configure-pages@v5
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
