@@ -4,6 +4,28 @@ Orbit is a small, static project-and-task workspace. It runs without a framework
 
 ## Run it on Windows
 
+## Challenge lab: learn by fixing incidents
+
+Open **Challenge lab** in the sidebar, or open `lab.html` directly. Choose an incident, reproduce the failure with **Run regression checks**, choose a patch strategy, explain the cause, record verification, and write a customer reply. Submit to get a score breakdown and tailored, rule-based advice. Enable the bonus toggle for a deliberately unrealistic lunar-calendar mission.
+
+Scoring: correctness 50, reasoning 15, verification 15, communication 15, speed 5. Speed points require all checks to pass. Hints have no penalty. Text scoring uses transparent heuristics in `lab-engine.js`; it does not understand arbitrary code or verify claims. The timer measures wall time including breaks. Switching missions retains drafts and timers during the current visit; refreshing starts new timers. Debriefs are browser-local, capped at the latest 100, and can be exported. XP sums each mission's best retained score. The lab uses isolated simulated data, not workspace tasks or real payments.
+
+For actual repository coding practice, repair the deliberately broken functions in `lab-fixes.js`, then run with Node 22 or newer:
+
+```sh
+node --test tests/lab-exercises.test.cjs
+```
+
+These exercise tests **intentionally fail at first**. The optional lunar test is named `OPTIONAL BONUS`; focus on the realistic tests first. Add your own edge cases. Browser patch choices are a separate simulation; they do not edit repository files, and repository changes do not alter browser strategy scores. GitHub Pages cannot execute Node tests; run these locally or in your own Actions workflow.
+
+The learning engine has a separate passing check used by the Pages workflow:
+
+```sh
+node --test tests/lab-engine.test.cjs
+```
+
+### Launch the workspace
+
 1. Download or clone this project.
 2. Double-click **`run-local.bat`**. It starts a small local web server and opens the app in your browser.
 3. To stop the server, return to the black command window and press **Ctrl+C**.
