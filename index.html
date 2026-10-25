@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f9fc">
+    <title>Orbit — project workspace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#" aria-label="Orbit home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>orbit<span class="brand-period">.</span></span>
+        </a>
+
+        <button class="workspace-switcher" type="button">
+          <span class="workspace-avatar">S</span>
+          <span class="workspace-copy"><strong>Studio North</strong><small>Free workspace</small></span>
+          <svg class="switcher-chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4"/></svg>
+        </button>
+
+        <div class="sidebar-label">WORKSPACE</div>
+        <nav class="main-nav" aria-label="Main navigation">
+          <button class="nav-item active" type="button" data-view="overview">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>
+            Overview
+          </button>
+          <button class="nav-item" type="button" data-view="my-tasks">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/><path d="M19 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h9"/></svg>
+            My tasks <span class="nav-count" id="myTaskCount">0</span>
+          </button>
+          <button class="nav-item" type="button" data-view="inbox">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 13h4l2 3h4l2-3h4"/></svg>
+            Inbox <span class="notification-dot" aria-label="Unread notifications"></span>
+          </button>
+        </nav>
+
+        <div class="sidebar-section-heading">
+          <span class="sidebar-label">YOUR PROJECTS</span>
+          <button class="icon-button small-icon" id="addProjectButton" type="button" aria-label="Add project" title="Add project">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>
+          </button>
+        </div>
+        <nav class="project-nav" id="projectNav" aria-label="Projects"></nav>
+
+        <div class="sidebar-bottom">
+          <div class="upgrade-card">
+            <span class="upgrade-icon">✦</span>
+            <strong>Make room for more</strong>
+            <p>Upgrade your workspace to unlock unlimited projects.</p>
+            <button type="button" id="upgradeButton">Explore plans <span aria-hidden="true">→</span></button>
+          </div>
+          <button class="profile-button" type="button" id="profileButton">
+            <span class="avatar avatar-sage">JD</span>
+            <span class="profile-copy"><strong>Jamie Davis</strong><small>jamie@studionorth.co</small></span>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="4" cy="10" r="1"/><circle cx="10" cy="10" r="1"/><circle cx="16" cy="10" r="1"/></svg>
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="icon-button mobile-menu" id="menuButton" type="button" aria-label="Open menu">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <div class="breadcrumbs"><span>Workspace</span><span class="crumb-divider">/</span><strong id="breadcrumbCurrent">Overview</strong></div>
+          <div class="topbar-actions">
+            <button class="icon-button topbar-icon" type="button" id="helpButton" aria-label="Help and tutorials" title="Help and tutorials">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.5 2.5 0 1 1 4.3 1.7c-1.2 1.1-1.9 1.5-1.9 3"/><path d="M12 17h.01"/></svg>
+            </button>
+            <button class="icon-button topbar-icon notification-button" type="button" aria-label="Notifications" id="notificationButton">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><i></i>
+            </button>
+            <span class="topbar-divider"></span>
+            <button class="avatar avatar-sage topbar-avatar" type="button" aria-label="Your profile">JD</button>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="welcome-row">
+            <div>
+              <div class="eyebrow" id="todayLabel"></div>
+              <h1 id="pageTitle">Good morning, Jamie <span class="wave" aria-hidden="true">✳</span></h1>
+              <p class="page-subtitle" id="pageSubtitle">Here's what's happening across your projects.</p>
+            </div>
+            <button class="button button-primary" id="newTaskButton" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>
+              New task
+            </button>
+          </section>
+
+          <section class="stats-grid" aria-label="Workspace summary">
+            <article class="stat-card">
+              <div class="stat-top"><span>Open tasks</span><span class="stat-icon icon-lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span></div>
+              <div class="stat-bottom"><strong id="openStat">0</strong><span class="stat-caption"><span class="stat-trend">↗</span> Across all projects</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Completed this week</span><span class="stat-icon icon-mint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span></div>
+              <div class="stat-bottom"><strong id="completedStat">0</strong><span class="stat-caption"><span class="stat-trend">↗</span> Nice work, team!</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Due this week</span><span class="stat-icon icon-peach"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M16 3v4M8 3v4M4 10h16"/></svg></span></div>
+              <div class="stat-bottom"><strong id="dueStat">0</strong><span class="stat-caption">Keep things moving</span></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Average efficiency</span><span class="stat-icon icon-blue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16"/><path d="m7 15 4-4 3 2 6-7"/></svg></span></div>
+              <div class="stat-bottom"><strong id="efficiencyStat">—</strong><span class="stat-caption" id="qualityStat">Rate completed tasks</span></div>
+            </article>
+          </section>
+
+          <section class="focus-card" aria-label="Weekly progress">
+            <div class="focus-copy">
+              <span class="focus-kicker"><span class="sparkle">✦</span> YOUR WEEK AT A GLANCE</span>
+              <h2>A little progress goes a long way.</h2>
+              <p id="progressCopy">You’re building great momentum. Keep it up!</p>
+              <div class="progress-track"><span id="progressBar"></span></div>
+              <span class="progress-caption" id="progressLabel"></span>
+            </div>
+            <div class="focus-illustration" aria-hidden="true">
+              <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+              <div class="illustration-sun"></div>
+              <div class="illustration-plant"><i></i><i></i><i></i><span></span></div>
+              <div class="illustration-check">✓</div>
+              <div class="illustration-star star-a">✦</div><div class="illustration-star star-b">✧</div>
+            </div>
+          </section>
+
+          <section class="task-section">
+            <div class="section-heading">
+              <div><h2 id="taskSectionTitle">Your tasks</h2><p id="taskSectionDescription">A good day starts with a clear plan.</p></div>
+              <button class="button button-quiet" type="button" id="viewAllButton">View all tasks <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="task-toolbar">
+              <div class="filter-tabs" role="tablist" aria-label="Filter tasks">
+                <button class="filter-tab selected" type="button" data-filter="all" role="tab" aria-selected="true">All <span id="allCount">0</span></button>
+                <button class="filter-tab" type="button" data-filter="in-progress" role="tab" aria-selected="false">In progress</button>
+                <button class="filter-tab" type="button" data-filter="todo" role="tab" aria-selected="false">To do</button>
+                <button class="filter-tab" type="button" data-filter="done" role="tab" aria-selected="false">Completed</button>
+              </div>
+              <label class="search-box">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.8" cy="8.8" r="5.8"/><path d="m13 13 4 4"/></svg>
+                <input id="taskSearch" type="search" placeholder="Search tasks" aria-label="Search tasks">
+                <kbd>⌘ K</kbd>
+              </label>
+            </div>
+            <div class="task-list" id="taskList"></div>
+            <div class="list-footer" id="listFooter"></div>
+          </section>
+
+          <footer class="page-footer">
+            <span>Made for thoughtful work <span aria-hidden="true">✦</span></span>
+            <span class="footer-actions"><button type="button" id="exportButton">Export backup</button><button type="button" id="importButton">Import backup</button><button type="button" id="resetButton">Reset demo</button><button type="button" id="footerHelp">Help</button></span>
+          </footer>
+        </div>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <dialog class="modal" id="taskModal">
+      <form class="modal-card task-form" id="taskForm">
+        <div class="modal-heading"><div><span class="modal-kicker" id="taskModalKicker">ADD TO YOUR WORKSPACE</span><h2 id="taskModalTitle">Create a task</h2></div><button class="icon-button modal-close" type="button" data-close aria-label="Close dialog"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
+        <label class="field-label" for="taskName">Task name</label>
+        <input class="text-input" id="taskName" name="title" placeholder="What needs to get done?" required maxlength="100">
+        <label class="field-label" for="taskDescription">Description <span>Optional</span></label>
+        <textarea class="text-input text-area" id="taskDescription" name="description" placeholder="Add a few details to help your team..." rows="3" maxlength="500"></textarea>
+        <div class="form-row">
+          <div><label class="field-label" for="taskProject">Project</label><select class="text-input" id="taskProject" name="project"></select></div>
+          <div><label class="field-label" for="taskDueDate">Due date</label><input class="text-input" id="taskDueDate" name="dueDate" type="date"></div>
+        </div>
+        <div class="form-row">
+          <div><label class="field-label" for="taskAssignee">Assignee</label><select class="text-input" id="taskAssignee" name="assignee"><option value="JD">Jamie Davis</option><option value="AL">Alex Lee</option><option value="MK">Morgan Kim</option><option value="SC">Sam Chen</option></select></div>
+          <div><label class="field-label" for="taskPriority">Priority</label><select class="text-input" id="taskPriority" name="priority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></div>
+        </div>
+        <label class="field-label" for="taskEstimate">Estimated time <span>Optional, minutes</span></label>
+        <input class="text-input" id="taskEstimate" name="estimatedMinutes" type="number" min="1" max="100000" placeholder="e.g. 60">
+        <div class="modal-actions"><button class="button button-quiet" type="button" data-close>Cancel</button><button class="button button-primary" type="submit">Create task</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="modal detail-modal" id="detailModal">
+      <article class="modal-card detail-card">
+        <div class="modal-heading"><span class="modal-kicker">TASK DETAILS</span><button class="icon-button modal-close" type="button" data-close aria-label="Close dialog"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
+        <div id="detailContent"></div>
+      </article>
+    </dialog>
+    <dialog class="modal" id="projectModal">
+      <form class="modal-card task-form" id="projectForm">
+        <div class="modal-heading"><div><span class="modal-kicker">ORGANIZE YOUR WORK</span><h2>Create a project</h2></div><button class="icon-button modal-close" type="button" data-close aria-label="Close dialog"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
+        <label class="field-label" for="projectName">Project name</label><input class="text-input" id="projectName" name="name" placeholder="e.g. Website refresh" required maxlength="40">
+        <label class="field-label" for="projectColor">Project color</label><select class="text-input" id="projectColor" name="color"><option value="violet">Violet</option><option value="green">Green</option><option value="orange">Orange</option><option value="blue">Blue</option><option value="pink">Pink</option></select>
+        <div class="modal-actions"><button class="button button-quiet" type="button" data-close>Cancel</button><button class="button button-primary" type="submit">Create project</button></div>
+      </form>
+    </dialog>
+    <dialog class="modal" id="completionModal">
+      <form class="modal-card task-form" id="completionForm">
+        <div class="modal-heading"><div><span class="modal-kicker">A QUICK RETROSPECTIVE</span><h2>How did it go?</h2></div><button class="icon-button modal-close" type="button" data-close aria-label="Close dialog"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
+        <p class="completion-task-name" id="completionTaskName"></p>
+        <label class="field-label" for="efficiencyRating">Efficiency <span>How smoothly did the work go?</span></label>
+        <select class="text-input" id="efficiencyRating" name="efficiency" required><option value="5">5 — Very efficient</option><option value="4">4 — Smooth</option><option value="3" selected>3 — As expected</option><option value="2">2 — Some friction</option><option value="1">1 — Blocked or inefficient</option></select>
+        <label class="field-label" for="qualityRating">Quality <span>How happy are you with the result?</span></label>
+        <select class="text-input" id="qualityRating" name="quality" required><option value="5">5 — Excellent</option><option value="4">4 — Strong</option><option value="3" selected>3 — Meets expectations</option><option value="2">2 — Needs improvement</option><option value="1">1 — Not ready</option></select>
+        <div class="form-row">
+          <div><label class="field-label" for="actualMinutes">Actual time <span>Minutes</span></label><input class="text-input" id="actualMinutes" name="actualMinutes" type="number" min="1" max="100000" placeholder="Optional"></div>
+          <div class="estimate-comparison" id="estimateComparison"></div>
+        </div>
+        <label class="field-label" for="completionNotes">What helped or got in the way? <span>Optional</span></label>
+        <textarea class="text-input text-area" id="completionNotes" name="notes" rows="2" maxlength="500" placeholder="A note for next time..."></textarea>
+        <div class="completion-hint">Your ratings help you spot patterns and make the next task easier.</div>
+        <div class="modal-actions"><button class="button button-quiet" type="button" data-close>Not now</button><button class="button button-primary" type="submit">Save review &amp; complete</button></div>
+      </form>
+    </dialog>
+    <input id="importFile" type="file" accept="application/json,.json" hidden>
+    <script src="app.js"></script>
+  </body>
+</html>
