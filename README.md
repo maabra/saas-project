@@ -6,9 +6,11 @@ Orbit is a small, static project-and-task workspace. It runs without a framework
 
 ## Challenge lab: learn by fixing incidents
 
-Open **Challenge lab** in the sidebar, or open `lab.html` directly. Use the selector at the top to switch between SaaS and CPaaS (Communications Platform as a Service). CPaaS includes tenant-scoped message retries, out-of-order delivery callbacks, and SMS segment accounting. These are simplified simulations with no live messages, credentials, or provider charges. Drafts and timers survive track switches during the current visit; XP and history include both tracks. Choose an incident, reproduce the failure with **Run regression checks**, choose a patch strategy, explain the cause, record verification, and write a customer reply. Submit to get a score breakdown and tailored, rule-based advice. Enable the bonus toggle for a deliberately unrealistic lunar-calendar mission.
+Open **Challenge lab** in the sidebar, or open `lab.html` directly. Use the selector at the top to switch between SaaS and CPaaS (Communications Platform as a Service). Each track now has six required missions: two each at Beginner, Intermediate, and Advanced. SaaS covers billing, seat limits, retries, pagination, tenant isolation, and roles. CPaaS covers segment accounting, recipient formatting, message retries, rate-limit delays, callbacks, and consent isolation. Choose a track and difficulty at the top; all levels are available. These are simplified simulations with no live messages, credentials, or provider charges. Drafts, timers, selected track/difficulty, and completions persist across reloads in this browser; XP and history include both tracks. Choose an incident, reproduce the failure with **Run regression checks**, choose a patch strategy, explain the cause, record verification, and write a customer reply. Submit to get a score breakdown and tailored, rule-based advice. Enable the bonus toggle for a deliberately unrealistic lunar-calendar mission.
 
-Scoring: correctness 50, reasoning 15, verification 15, communication 15, speed 5. Speed points require all checks to pass. Hints have no penalty. Text scoring uses transparent heuristics in `lab-engine.js`; it does not understand arbitrary code or verify claims. The timer measures wall time including breaks. Switching missions retains drafts and timers during the current visit; refreshing starts new timers. Debriefs are browser-local, capped at the latest 100, and can be exported. XP sums each mission's best retained score. The lab uses isolated simulated data, not workspace tasks or real payments.
+To finish a mission, choose a repair, pass every regression check, fill in diagnosis, verification, and customer reply, then click **Finish mission & get debrief**. Completion checks that the written fields are nonempty; it does not verify their accuracy. Coaching scores do not gate completion. Both required missions complete a difficulty; all six complete a track. Bonus missions are optional. Use **Next unfinished mission** or **Start next difficulty** after finishing. Completed missions remain available for practice. Exports include course progress and drafts.
+
+Scoring: correctness 50, reasoning 15, verification 15, communication 15, speed 5. Speed points require all checks to pass. Hints have no penalty. Text scoring uses transparent heuristics in `lab-engine.js`; it does not understand arbitrary code or verify claims. The timer measures wall time including breaks. Switching missions retains drafts and timers during the current visit; refreshing restores drafts and timers. Debriefs are browser-local, capped at the latest 100, and can be exported. XP sums each mission's best retained score. The lab uses isolated simulated data, not workspace tasks or real payments.
 
 For actual repository coding practice, repair the deliberately broken functions in `lab-fixes.js`, then run with Node 22 or newer:
 
@@ -21,7 +23,7 @@ These exercise tests **intentionally fail at first**. The optional lunar test is
 The learning engine has a separate passing check used by the Pages workflow:
 
 ```sh
-node --test tests/lab-engine.test.cjs
+node --test tests/lab-engine.test.cjs tests/lab-course.test.cjs
 ```
 
 ### Launch the workspace

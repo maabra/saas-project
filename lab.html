@@ -5,10 +5,12 @@
 <header><a class="brand" href="index.html">orbit<span>.</span></a><span>LEARN BY BREAKING THINGS</span><a href="index.html">Workspace ↗</a></header>
 <main>
   <label class="track-picker" for="track">Practice track<select id="track"><option value="saas">SaaS · Software as a Service</option><option value="cpaas">CPaaS · Communications Platform as a Service</option></select></label>
+  <label class="track-picker" for="difficulty">Difficulty<select id="difficulty"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></label>
+  <section id="curriculum" class="curriculum" aria-live="polite"></section>
   <section class="hero"><div><p class="eyebrow">YOUR LOCAL SAAS FLIGHT SIMULATOR</p><h1>Small incidents.<br>Real learning.</h1><p>Investigate a broken feature, ship a fix, and explain your thinking. Make mistakes here. Get better for out there.</p></div><div class="rank"><span>CAREER PROGRESS</span><strong id="xp">0 XP</strong><p id="progress">Your first incident is waiting.</p></div></section>
   <div class="toolbar"><h2>Incident queue</h2><label><input type="checkbox" id="bonus"> Include strange bonus missions</label></div>
-  <p class="muted">Simulated fixtures only: your workspace stays safe. Progress lives in this browser. Every mission can also be fixed in the repository.</p>
-  <div class="layout"><nav id="missions" aria-label="Choose an incident"></nav><section id="incident" aria-live="polite"></section></div>
+  <p class="muted">Simulated fixtures only: your workspace stays safe. Progress lives in this browser. Finish a mission by passing every check and completing the three written steps. Finish both missions to complete a difficulty. Scores are coaching only.</p>
+  <div class="layout"><nav id="missions" aria-label="Choose an incident"></nav><section id="incident"></section></div>
   <section class="history"><h2>Your debriefs</h2><div id="history"></div><button id="export" type="button">Export learning record</button><p class="muted">Local rule-based coaching, not an AI or a verified assessment. Text feedback rewards explicit evidence; it cannot prove that a written explanation is true.</p></section>
 </main><script src="lab-engine.js"></script><script src="lab.js"></script>
 </body></html>

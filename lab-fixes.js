@@ -23,4 +23,11 @@ function deliveryStatus(events) {
 function smsSegments(septets) {
   return Math.ceil(septets / 160);
 }
-if (typeof module !== 'undefined') module.exports = { invoiceTotal, findTenantTask, chargedTotal, lunarMonth, uniqueMessages, deliveryStatus, smsSegments };
+// New course exercises are deliberately broken too.
+function canInvite(count, limit) { return count <= limit; }
+function pageItems(items, page, size) { return items.slice(0, size); }
+function canDelete(user, tenant) { return !!user; }
+function formatRecipient(value) { return '+' + value; }
+function retryDelay(local, provider) { return local; }
+function allowedMessages(messages, suppressions) { return messages; }
+if (typeof module !== 'undefined') module.exports = { invoiceTotal, findTenantTask, chargedTotal, lunarMonth, uniqueMessages, deliveryStatus, smsSegments, canInvite, pageItems, canDelete, formatRecipient, retryDelay, allowedMessages };

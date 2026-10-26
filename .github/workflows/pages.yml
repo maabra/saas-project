@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: '22'
       - name: Check learning engine
-        run: node --test tests/lab-engine.test.cjs
+        run: node --test tests/lab-engine.test.cjs tests/lab-course.test.cjs
       - name: Configure GitHub Pages (requires Pages enabled in repository Settings)
         uses: actions/configure-pages@v5
       - name: Upload static site

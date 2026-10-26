@@ -41,3 +41,24 @@ test('CPaaS: simplified GSM-7 septet counts respect multipart boundaries', () =>
     assert.equal(fixes.smsSegments(n), [0, 1, 1, 2, 2, 3, 3][i]);
   });
 });
+
+test('SaaS course: seats, pagination, and administrator access', () => {
+  assert.equal(fixes.canInvite(4, 5), true);
+  assert.equal(fixes.canInvite(5, 5), false);
+  assert.deepEqual(fixes.pageItems(['A','B','C','D','E'], 2, 2), ['C','D']);
+  assert.deepEqual(fixes.pageItems([], 1, 2), []);
+  assert.equal(fixes.canDelete({ tenant: 'north', role: 'admin' }, 'north'), true);
+  assert.equal(fixes.canDelete({ tenant: 'south', role: 'admin' }, 'north'), false);
+  assert.equal(fixes.canDelete({ tenant: 'north', role: 'viewer' }, 'north'), false);
+  assert.equal(fixes.canDelete(null, 'north'), false);
+});
+test('CPaaS course: recipient formatting, retry delay, and tenant-scoped opt-outs', () => {
+  assert.equal(fixes.formatRecipient('+1 234-567-8901'), '+12345678901');
+  assert.equal(fixes.formatRecipient('12345678901'), null);
+  assert.equal(fixes.retryDelay(2, 10), 10);
+  assert.equal(fixes.retryDelay(20, 10), 20);
+  assert.equal(fixes.retryDelay(2), 2);
+  const north = { tenant: 'north', to: '123' }, south = { tenant: 'south', to: '123' };
+  assert.deepEqual(fixes.allowedMessages([north, south], [north]), [south]);
+  assert.deepEqual(fixes.allowedMessages([], []), []);
+});

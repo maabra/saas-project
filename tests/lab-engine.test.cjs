@@ -20,3 +20,24 @@ test('clear evidence plus passing checks earns full score', () => {
   const result = review({ tests: run('money', 1), diagnosis: 'The invoice was wrong because truncating each price removed cents before multiplying by the seat count.', verification: 'A regression test asserts expected output of 59.97 for three seats and an edge case with zero seats.', reply: 'The customer invoice was affected by rounding. We fixed the calculation and will monitor the next invoice update.', seconds: 60, minutes: 8, hints: 0 });
   assert.equal(result.score, 100);
 });
+
+const { completion, curriculum, levels } = require('../lab-engine.js');
+test('both tracks have two required missions at each difficulty', () => {
+  for (const track of ['saas', 'cpaas']) for (const difficulty of levels) {
+    assert.equal(curriculum([], track, difficulty).total, 2);
+  }
+});
+test('completion requires passing checks and all written steps, independent of coaching score', () => {
+  const answers = { diagnosis: 'Cause', verification: 'Checked', reply: 'Updated' };
+  assert.equal(completion(run('money', 1), answers).complete, true);
+  assert.equal(completion(run('money', 0), answers).complete, false);
+  assert.equal(completion([], answers).complete, false);
+  for (const key of Object.keys(answers)) assert.equal(completion(run('money', 1), { ...answers, [key]: '   ' }).complete, false);
+});
+test('difficulty and track completion exclude bonus and other tracks; repeats do not inflate totals', () => {
+  const ids = missions.filter(m => m.track === 'saas' && !m.bonus).map(m => m.id);
+  assert.equal(curriculum([...ids, ...ids], 'saas').done, 6);
+  assert.equal(curriculum(ids, 'saas').complete, true);
+  assert.equal(curriculum(ids, 'cpaas').done, 0);
+  assert.equal(curriculum(['moon'], 'saas', 'advanced').done, 0);
+});
