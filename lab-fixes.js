@@ -30,4 +30,11 @@ function canDelete(user, tenant) { return !!user; }
 function formatRecipient(value) { return '+' + value; }
 function retryDelay(local, provider) { return local; }
 function allowedMessages(messages, suppressions) { return messages; }
-if (typeof module !== 'undefined') module.exports = { invoiceTotal, findTenantTask, chargedTotal, lunarMonth, uniqueMessages, deliveryStatus, smsSegments, canInvite, pageItems, canDelete, formatRecipient, retryDelay, allowedMessages };
+// Additional deliberately broken practice exercises.
+function searchTitles(titles, query) { return titles.filter(t => t.includes(query)); }
+function canUpload(used, batch, limit) { return used < limit; }
+function validInvite(invite, tenant, now) { return !!invite && now < invite.expiresAt; }
+function messageCost(recipients, segments, cents) { return recipients * cents; }
+function chooseRoute(routes, number) { return routes.find(r => number.startsWith(r.prefix))?.name ?? null; }
+function readyToSend(message, now) { return now >= message.sendAt; }
+if (typeof module !== 'undefined') module.exports = { invoiceTotal, findTenantTask, chargedTotal, lunarMonth, uniqueMessages, deliveryStatus, smsSegments, canInvite, pageItems, canDelete, formatRecipient, retryDelay, allowedMessages, searchTitles, canUpload, validInvite, messageCost, chooseRoute, readyToSend };

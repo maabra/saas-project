@@ -62,3 +62,44 @@ test('CPaaS course: recipient formatting, retry delay, and tenant-scoped opt-out
   assert.deepEqual(fixes.allowedMessages([north, south], [north]), [south]);
   assert.deepEqual(fixes.allowedMessages([], []), []);
 });
+
+test('SaaS: search trims whitespace and ignores case', () => {
+  assert.deepEqual(fixes.searchTitles(['Launch plan', 'Budget review'], '  LAUNCH  '), ['Launch plan']);
+  assert.deepEqual(fixes.searchTitles(['Launch plan'], ''), ['Launch plan']);
+  assert.deepEqual(fixes.searchTitles([], 'launch'), []);
+});
+test('SaaS: upload quota includes the entire batch and rejects negative inputs', () => {
+  assert.equal(fixes.canUpload(90, 15, 100), false);
+  assert.equal(fixes.canUpload(90, 10, 100), true);
+  assert.equal(fixes.canUpload(0, 0, 0), true);
+  assert.equal(fixes.canUpload(-1, 5, 100), false);
+  assert.equal(fixes.canUpload(5, -1, 100), false);
+});
+test('SaaS: invites enforce tenant, single use, and exact expiry', () => {
+  const invite = { tenant: 'north', used: false, expiresAt: 100 };
+  assert.equal(fixes.validInvite(invite, 'north', 99), true);
+  assert.equal(fixes.validInvite(invite, 'south', 99), false);
+  assert.equal(fixes.validInvite({ ...invite, used: true }, 'north', 99), false);
+  assert.equal(fixes.validInvite(invite, 'north', 100), false);
+  assert.equal(fixes.validInvite(null, 'north', 99), false);
+});
+test('CPaaS: cost accounts for recipients and segments in integer cents', () => {
+  assert.equal(fixes.messageCost(3, 2, 4), 24);
+  assert.equal(fixes.messageCost(0, 2, 4), 0);
+  assert.equal(fixes.messageCost(3, 0, 4), 0);
+});
+test('CPaaS: routing chooses the longest prefix independent of order', () => {
+  const routes = [{ prefix: '+1', name: 'general' }, { prefix: '+123', name: 'regional' }];
+  assert.equal(fixes.chooseRoute(routes, '+12345678'), 'regional');
+  assert.equal(fixes.chooseRoute([...routes].reverse(), '+12345678'), 'regional');
+  assert.equal(fixes.chooseRoute(routes, '+19876543'), 'general');
+  assert.equal(fixes.chooseRoute(routes, '+44987654'), null);
+  assert.equal(fixes.chooseRoute([], '+12345678'), null);
+});
+test('CPaaS: queue sends only inside a valid scheduled window', () => {
+  const message = { sendAt: 10, expiresAt: 20 };
+  assert.equal(fixes.readyToSend(message, 9), false);
+  assert.equal(fixes.readyToSend(message, 10), true);
+  assert.equal(fixes.readyToSend(message, 20), false);
+  assert.equal(fixes.readyToSend({ sendAt: 20, expiresAt: 10 }, 15), false);
+});

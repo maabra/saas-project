@@ -22,9 +22,9 @@ test('clear evidence plus passing checks earns full score', () => {
 });
 
 const { completion, curriculum, levels } = require('../lab-engine.js');
-test('both tracks have two required missions at each difficulty', () => {
+test('both tracks have three required missions at each difficulty', () => {
   for (const track of ['saas', 'cpaas']) for (const difficulty of levels) {
-    assert.equal(curriculum([], track, difficulty).total, 2);
+    assert.equal(curriculum([], track, difficulty).total, 3);
   }
 });
 test('completion requires passing checks and all written steps, independent of coaching score', () => {
@@ -36,7 +36,7 @@ test('completion requires passing checks and all written steps, independent of c
 });
 test('difficulty and track completion exclude bonus and other tracks; repeats do not inflate totals', () => {
   const ids = missions.filter(m => m.track === 'saas' && !m.bonus).map(m => m.id);
-  assert.equal(curriculum([...ids, ...ids], 'saas').done, 6);
+  assert.equal(curriculum([...ids, ...ids], 'saas').done, 9);
   assert.equal(curriculum(ids, 'saas').complete, true);
   assert.equal(curriculum(ids, 'cpaas').done, 0);
   assert.equal(curriculum(['moon'], 'saas', 'advanced').done, 0);

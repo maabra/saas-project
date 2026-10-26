@@ -51,15 +51,15 @@ test('finish both tracks, persist completions, and keep drafts across reload', (
       }
     }
   }
-  assert.equal(app.state().completed.length, 12);
+  assert.equal(app.state().completed.length, 18);
   app.nodes.get('diagnosis').value = 'Draft survives reload';
   app.nodes.get('response').oninput({ target: { id: 'diagnosis' } });
   const restored = launch(app.storage);
-  assert.equal(restored.state().completed.length, 12);
+  assert.equal(restored.state().completed.length, 18);
   assert.equal(restored.nodes.get('track').value, 'cpaas');
   assert.equal(restored.nodes.get('difficulty').value, 'advanced');
   assert.match(restored.nodes.get('curriculum').innerHTML, /Track complete/);
-  const m = engine.missions.find(m => m.id === 'optout');
+  const m = engine.missions.find(m => m.id === 'ttl');
   restored.nodes.get('missions').onclick({ target: { closest: () => ({ dataset: { id: m.id } }) } });
   assert.equal(restored.nodes.get('diagnosis').value, 'Draft survives reload');
 });
@@ -68,4 +68,12 @@ test('unavailable storage shows a warning without breaking the lab', () => {
   assert.match(app.nodes.get('saveStatus').textContent, /could not be saved/);
   answer(app, engine.missions.find(m => m.id === 'money'));
   assert.match(app.nodes.get('completionStatus').textContent, /complete/);
+});
+
+test('older course completions remain saved while expanded difficulties gain new work', () => {
+  const storage = new Map([['orbit-lab-course-v1', JSON.stringify({ completed: ['money', 'seats'], sessions: {}, track: 'saas', difficulty: 'beginner' })]]);
+  const app = launch(storage);
+  assert.deepEqual(app.state().completed, ['money', 'seats']);
+  assert.match(app.nodes.get('incident').innerHTML, /Search misses/);
+  assert.match(app.nodes.get('curriculum').innerHTML, /beginner - 2\/3/);
 });

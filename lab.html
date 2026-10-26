@@ -4,12 +4,57 @@
 <body>
 <header><a class="brand" href="index.html">orbit<span>.</span></a><span>LEARN BY BREAKING THINGS</span><a href="index.html">Workspace ↗</a></header>
 <main>
+  <details class="tutorial" id="tutorial" open>
+    <summary>Start here: how the challenge lab works</summary>
+    <div class="tutorial-body">
+      <p>This lab is a small incident simulator. You investigate a reported problem, choose a repair, test it, and explain the result. You can finish everything in the browser without writing code.</p>
+      <div class="tutorial-grid">
+        <section><h2>Choose what to practice</h2><p><strong>SaaS</strong> means Software as a Service: software used by customers over the internet. These missions cover tasks, billing, plans, and access.</p><p><strong>CPaaS</strong> means Communications Platform as a Service: building blocks for communication. These missions use messaging, delivery, routing, and queue fixtures.</p><p>Beginner missions focus on one calculation or rule. Intermediate missions combine inputs and edge cases. Advanced missions combine access, lifecycle, or timing rules. All difficulties are available from the start.</p></section>
+        <section><h2>Your mission workflow</h2><ol>
+          <li><strong>Read the incident.</strong> Identify what happened, the input that triggered it, and the expected result in the evidence box.</li>
+          <li><strong>Run the initial strategy.</strong> Click Run regression checks. FAIL shows an actual result that differs from the expected result.</li>
+          <li><strong>Choose a repair.</strong> Each strategy runs a different predefined implementation against the same fixtures. Try a strategy and run the checks again. Reveal hint is available without a score penalty.</li>
+          <li><strong>Explain and verify.</strong> Fill in the diagnosis, verification, and customer reply. Use the prompts below if you are stuck.</li>
+          <li><strong>Finish.</strong> Click Finish mission &amp; get debrief. Every check must pass and all three fields must contain text. The checklist shows what remains.</li>
+          <li><strong>Continue.</strong> Finish all three required missions to complete a difficulty and all nine to complete a track. The bonus mission is optional. You can revisit any completed mission.</li>
+        </ol></section>
+      </div>
+      <details><summary>Worked example: repair a delivery fee</summary>
+        <p>This separate example does not complete a mission or earn XP.</p>
+        <p><strong>Report:</strong> A customer orders three packages. The delivery fee is 2 credits per package, but checkout asks for 5 credits. Evidence: packages = 3, fee = 2, actual = 3 + 2 = 5; expected = 3 &times; 2 = 6.</p>
+        <p><strong>Repair:</strong> Multiply package count by the per-package fee. Adding the inputs uses the wrong operation.</p>
+        <pre>Before repair: 3 packages x 2 credits -> actual 5, expected 6 -> FAIL
+After repair:  3 packages x 2 credits -> actual 6, expected 6 -> PASS
+Edge case:    0 packages x 2 credits -> actual 0, expected 0 -> PASS</pre>
+        <p><strong>Diagnosis:</strong> The fee was wrong because checkout added the package count to the unit fee instead of multiplying. Multiplication charges the stated fee once for each package.</p>
+        <p><strong>Verification:</strong> I ran a regression test with three packages at two credits and expected six credits. I checked the zero-package edge case and expected zero credits.</p>
+        <p><strong>Customer reply:</strong> Your checkout delivery estimate was affected by a calculation error. The estimate now multiplies the package count by the fee. We will check the next estimate for the same issue.</p>
+      </details>
+      <details><summary>How to write your three responses</summary>
+        <ul><li><strong>Diagnosis:</strong> ?When [input] happened, [old behavior] caused [problem] because [reason]. The repair [change] produces [correct behavior].?</li>
+        <li><strong>Verification:</strong> ?I tested [exact input] and expected [exact output]. I also tested [empty, zero, duplicate, unknown, or boundary input] and expected [output].? Use cases you actually ran.</li>
+        <li><strong>Customer reply:</strong> ?The issue affected [feature/impact]. We changed [plain-language repair]. Next we will [specific follow-up].? In the lab this describes the simulated incident.</li></ul>
+        <p>Completion only checks that these fields contain text; it cannot prove the explanation is correct. The coaching rubric rewards detail, causal reasoning, expected outputs, an edge case, and a clear customer update.</p>
+      </details>
+      <details><summary>What the technical words mean</summary>
+        <dl><dt>Fixture</dt><dd>A small, fixed sample of input data and its expected output.</dd><dt>Regression check</dt><dd>A repeatable check that catches a broken behavior and confirms the repair keeps working.</dd><dt>Edge case</dt><dd>An input at a limit or outside the ordinary path, such as an empty list, exact expiry time, or duplicate request.</dd><dt>Tenant</dt><dd>A customer organization. A tenant check keeps one organization's records separate from another's.</dd><dt>Idempotency</dt><dd>Repeating the same operation has the same effect as doing it once. The retry missions use request IDs to recognize repeats.</dd><dt>Callback</dt><dd>An update received after an earlier request, such as a delivery status. Updates can arrive late or repeat in these fixtures.</dd><dt>Quota / time to live</dt><dd>A quota limits usage. A time to live limits how long an item remains usable; the queue expiry mission uses an explicit expiry time.</dd></dl>
+      </details>
+      <details><summary>Scores, saving, and optional coding practice</summary>
+        <p>Scores award up to 50 points for checks, 15 for reasoning, 15 for verification, 15 for communication, and 5 for speed. All checks must pass to earn speed points. Taking longer never prevents completion. Your best retained score per mission counts toward XP; XP and completion are separate.</p>
+        <p>Drafts, timers, selected track/difficulty, and completions save automatically in this browser. Timers include breaks and time away. Export learning record downloads your saved course data and recent debriefs; there is currently no import button. Clearing site data or switching browser/device does not carry your progress with you.</p>
+        <p>The browser runs predefined strategy simulations. It does not execute your JavaScript or modify files. For optional coding practice, repair the named function in <code>lab-fixes.js</code> and run <code>node --test tests/lab-exercises.test.cjs</code> locally with Node 22 or newer. Those tests intentionally fail until repaired. File repairs and browser completion are separate.</p>
+        <p>All data and provider rules are simplified fixtures. No messages, payments, or customer changes are sent.</p>
+      </details>
+      <p><a href="#missions">Choose an incident and start practicing &darr;</a> You can collapse this tutorial and reopen it whenever you need help.</p>
+    </div>
+  </details>
+
   <label class="track-picker" for="track">Practice track<select id="track"><option value="saas">SaaS · Software as a Service</option><option value="cpaas">CPaaS · Communications Platform as a Service</option></select></label>
   <label class="track-picker" for="difficulty">Difficulty<select id="difficulty"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></label>
   <section id="curriculum" class="curriculum" aria-live="polite"></section>
   <section class="hero"><div><p class="eyebrow">YOUR LOCAL SAAS FLIGHT SIMULATOR</p><h1>Small incidents.<br>Real learning.</h1><p>Investigate a broken feature, ship a fix, and explain your thinking. Make mistakes here. Get better for out there.</p></div><div class="rank"><span>CAREER PROGRESS</span><strong id="xp">0 XP</strong><p id="progress">Your first incident is waiting.</p></div></section>
   <div class="toolbar"><h2>Incident queue</h2><label><input type="checkbox" id="bonus"> Include strange bonus missions</label></div>
-  <p class="muted">Simulated fixtures only: your workspace stays safe. Progress lives in this browser. Finish a mission by passing every check and completing the three written steps. Finish both missions to complete a difficulty. Scores are coaching only.</p>
+  <p class="muted">Simulated fixtures only: your workspace stays safe. Progress lives in this browser. Finish a mission by passing every check and completing the three written steps. Finish all three required missions to complete a difficulty. Scores are coaching only.</p>
   <div class="layout"><nav id="missions" aria-label="Choose an incident"></nav><section id="incident"></section></div>
   <section class="history"><h2>Your debriefs</h2><div id="history"></div><button id="export" type="button">Export learning record</button><p class="muted">Local rule-based coaching, not an AI or a verified assessment. Text feedback rewards explicit evidence; it cannot prove that a written explanation is true.</p></section>
 </main><script src="lab-engine.js"></script><script src="lab.js"></script>
