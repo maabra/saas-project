@@ -15,6 +15,7 @@
   let timer;
   // Each mission retains its draft and timer when switching incidents.
   const sessions = {};
+  const visibleMissions = () => missions.filter(m => (m.track || 'saas') === $('track').value && (!m.bonus || $('bonus').checked));
   function history() {
     const best = missions.map(m => Math.max(0, ...records.filter(r => r.id === m.id).map(r => r.score)));
     $('xp').textContent = `${best.reduce((a, b) => a + b, 0)} XP`;
@@ -22,7 +23,7 @@
     $('history').innerHTML = (storageWarning ? `<p role="status">${escape(storageWarning)}</p>` : '') + (records.length ? records.slice().reverse().map(r => `<article class="record"><strong>${escape(missions.find(m => m.id === r.id).title)} · ${r.score}/100</strong><p>${escape(new Date(r.date).toLocaleString())} · ${Math.round(r.seconds || 0)}s · ${r.attempts || 1} test runs</p><p>${escape(r.reply)}</p></article>`).join('') : '<p class="muted">Finish an incident to start your learning record.</p>');
   }
   function list() {
-    $('missions').innerHTML = missions.filter(m => !m.bonus || $('bonus').checked).map(m => `<button class="mission ${active?.id === m.id ? 'selected' : ''}" data-id="${m.id}" type="button"><small>${escape(m.category)}</small><strong>${escape(m.title)}</strong><span>Target ${m.minutes} min ${records.some(r => r.id === m.id && r.score >= 70) ? '· ★ Practiced' : ''}</span></button>`).join('');
+    $('missions').innerHTML = visibleMissions().map(m => `<button class="mission ${active?.id === m.id ? 'selected' : ''}" data-id="${m.id}" type="button"><small>${escape(m.category)}</small><strong>${escape(m.title)}</strong><span>Target ${m.minutes} min ${records.some(r => r.id === m.id && r.score >= 70) ? '· ★ Practiced' : ''}</span></button>`).join('');
   }
   function saveDraft() {
     if (!active || !$('solution')) return;
@@ -59,7 +60,11 @@
     list();
   }
   $('missions').onclick = e => { const button = e.target.closest('[data-id]'); if (button) show(button.dataset.id); };
-  $('bonus').onchange = () => { if (active.bonus && !$('bonus').checked) show(missions[0].id); else list(); };
+  $('bonus').onchange = () => { if (!visibleMissions().includes(active)) show(visibleMissions()[0].id); else list(); };
+  $('track').onchange = () => {
+    document.querySelector('.eyebrow').textContent = $('track').value === 'cpaas' ? 'YOUR LOCAL CPAAS FLIGHT SIMULATOR' : 'YOUR LOCAL SAAS FLIGHT SIMULATOR';
+    show(visibleMissions()[0].id);
+  };
   $('export').onclick = () => {
     const url = URL.createObjectURL(new Blob([JSON.stringify({ version: 1, records }, null, 2)], { type: 'application/json' }));
     const link = document.createElement('a'); link.href = url; link.download = 'orbit-learning-record.json'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);

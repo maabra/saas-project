@@ -2,4 +2,7 @@
 !/.github/workflows/
 /.github/workflows/*
 !/.github/workflows/pages.yml
-/.vscode
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/extensions.json
+!/.vscode/github-workflow.schema.json

@@ -13,4 +13,14 @@ function chargedTotal(requests) {
 function lunarMonth(month, offset) {
   return ((month - 1 + offset) % 12) + 1;
 }
-if (typeof module !== 'undefined') module.exports = { invoiceTotal, findTenantTask, chargedTotal, lunarMonth };
+// CPaaS exercises use simplified fixtures, not a live messaging provider.
+function uniqueMessages(messages) {
+  return messages;
+}
+function deliveryStatus(events) {
+  return events.at(-1) || 'queued';
+}
+function smsSegments(septets) {
+  return Math.ceil(septets / 160);
+}
+if (typeof module !== 'undefined') module.exports = { invoiceTotal, findTenantTask, chargedTotal, lunarMonth, uniqueMessages, deliveryStatus, smsSegments };

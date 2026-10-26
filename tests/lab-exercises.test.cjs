@@ -22,3 +22,22 @@ test('OPTIONAL BONUS: fictional lunar calendar wraps at 13', () => {
   assert.equal(fixes.lunarMonth(13, 1), 1);
   assert.equal(fixes.lunarMonth(1, 26), 1);
 });
+
+// These also intentionally fail until the corresponding CPaaS exercises are repaired.
+test('CPaaS: message retries isolate tenant keys and retain distinct requests', () => {
+  const a = { tenant: 'north', id: 'a', to: '+15550100' };
+  assert.deepEqual(fixes.uniqueMessages([a, a]), [a]);
+  const b = { ...a, id: 'b' }, c = { ...a, tenant: 'south' };
+  assert.deepEqual(fixes.uniqueMessages([a, b, c]), [a, b, c]);
+  assert.deepEqual(fixes.uniqueMessages([]), []);
+});
+test('CPaaS: late, duplicate and unknown callbacks preserve delivery progress', () => {
+  assert.equal(fixes.deliveryStatus(['sent', 'delivered', 'sent']), 'delivered');
+  assert.equal(fixes.deliveryStatus(['sent', 'sent', 'unknown']), 'sent');
+  assert.equal(fixes.deliveryStatus([]), 'queued');
+});
+test('CPaaS: simplified GSM-7 septet counts respect multipart boundaries', () => {
+  [0, 1, 160, 161, 306, 307, 320].forEach((n, i) => {
+    assert.equal(fixes.smsSegments(n), [0, 1, 1, 2, 2, 3, 3][i]);
+  });
+});

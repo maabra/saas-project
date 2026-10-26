@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# yaml-language-server: $schema=../../.vscode/github-workflow.schema.json
 # One-time setup: repository Settings > Pages > Source > GitHub Actions.
 # configure-pages cannot enable a new Pages site with the default GITHUB_TOKEN.
 name: Deploy Orbit to GitHub Pages

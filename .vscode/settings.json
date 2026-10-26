@@ -1,0 +1,11 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^node --check app\\.js; if \\(\\$\\?\\) \\{ Write-Output 'JavaScript syntax check passed\\.' \\}$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    },
+    "yaml.schemas": {
+        "./.vscode/github-workflow.schema.json": ".github/workflows/*.{yml,yaml}"
+    }
+}
