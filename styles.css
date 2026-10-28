@@ -255,6 +255,23 @@ h1 { margin-bottom: 5px; font-size: clamp(23px, 2.5vw, 28px); font-weight: 700; 
 .dependency-link:hover { text-decoration: underline; }
 .dependency-link.is-complete { color: #57936d; }
 .blocked-note { margin: 9px 0 0; color: #b76f50; font-size: 9px; }
+.subtask-indicator { color: #888998; font-size: 8px; }
+.subtask-progress { color: #6b5bc4; font-size: 8px; }
+.task-hierarchy { margin-top: 14px; padding: 12px; border: 1px solid #eeebfa; border-radius: 8px; background: #faf9ff; }
+.empty-hierarchy { padding: 9px 12px; }
+.parent-task-row, .subtask-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.parent-task-row { justify-content: flex-start; color: #9292a1; font-size: 9px; }
+.subtask-heading { margin-top: 1px; }
+.subtask-heading > div { display: grid; gap: 3px; }
+.subtask-heading h3 { margin: 0; color: #4d4b62; font-family: Manrope, sans-serif; font-size: 10px; }
+.subtask-heading span { color: #9292a1; font-size: 9px; }
+.subtask-progress-track { height: 5px; margin: 10px 0; overflow: hidden; border-radius: 99px; background: #eae8f3; }
+.subtask-progress-track span { display: block; height: 100%; border-radius: inherit; background: #8c7be0; transition: width .2s ease; }
+.subtask-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.subtask-list li { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.subtask-link { min-width: 0; overflow: hidden; padding: 0; border: 0; background: transparent; color: #6554c7; font-size: 10px; text-align: left; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.subtask-link:hover { text-decoration: underline; }
+.subtask-list .status-pill { margin-left: auto; }
 .estimate-line { margin: 11px 0 0; color: #888998; font-size: 9px; }
 .estimate-line strong { color: #656677; }
 .review-card { margin-top: 14px; padding: 12px; border: 1px solid #eeebfa; border-radius: 8px; background: #faf9ff; }

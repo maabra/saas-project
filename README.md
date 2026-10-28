@@ -42,6 +42,7 @@ node --test tests/lab-engine.test.cjs tests/lab-course.test.cjs
 
 - Create projects with **+** beside **Your Projects**; add or edit work with **New task** or **Edit**.
 - Set task **Prerequisites** to show work that must finish first. Tasks with unfinished prerequisites appear as **Blocked**; dependency cycles are prevented, and deleting a prerequisite removes it from dependent tasks.
+- Break large tasks into a hierarchy with **Add subtask** in task details or the **Parent task** field while creating or editing. Parent tasks show nested progress and cannot be completed until every subtask is complete. Reopening a subtask reopens completed ancestors; deleting a parent promotes its subtasks one level. Orbit prevents hierarchy loops and cross-links that would make completion impossible.
 - **Overview** shows workspace metrics and tasks; **Inbox** is a separate activity feed for task comments and completions. Updates have persistent read state, unread filters and counts, a **Mark all as read** action, and links back to each task. The bell opens directly to unread updates.
 - Tasks can be planned at **Beginner**, **Intermediate**, or **Hard** difficulty, filtered by level, estimated, and linked to prerequisites. The starter workspace includes examples at every level across its projects; use **Reset demo** to reload the expanded sample workspace.
 - Complete tasks with the checkbox, then save ratings and an optional time review. Reopening clears completion ratings.

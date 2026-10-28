@@ -201,6 +201,9 @@
         <p class="field-help" id="difficultyHelp">Choose the level of planning and problem-solving, not the task’s priority.</p>
         <label class="field-label" for="taskEstimate">Estimated time <span>Optional, minutes</span></label>
         <input class="text-input" id="taskEstimate" name="estimatedMinutes" type="number" min="1" max="100000" placeholder="e.g. 60">
+        <label class="field-label" for="taskParent">Parent task <span>Optional, nest this as a subtask</span></label>
+        <select class="text-input" id="taskParent" name="parentTaskId"></select>
+        <p class="field-help">Parent tasks stay blocked until their subtasks are complete. Hierarchy cycles are not allowed.</p>
         <label class="field-label" for="taskDependencies">Prerequisites <span>Optional, select all that must finish first</span></label>
         <select class="text-input dependency-select" id="taskDependencies" name="dependencies" multiple size="4" aria-describedby="dependencyHelp"></select>
         <p class="field-help" id="dependencyHelp">Tasks stay blocked until every prerequisite is complete. Dependency cycles are not allowed.</p>

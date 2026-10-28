@@ -28,14 +28,14 @@ function createInitialState() {
       { id: "task-7", title: "Collect customer quotes", description: "Find a few short customer quotes for the new homepage.", project: "website", status: "done", completedAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), estimatedMinutes: 45, completionReview: { efficiency: 3, quality: 4, actualMinutes: 50, notes: "Next time, collect quotes as they arrive." }, dueDate: daysFromNow(-2), assignee: "SC", priority: "low", difficulty: "beginner", comments: [] },
       { id: "task-8", title: "Plan next week's social posts", description: "Draft post ideas and line them up with the product launch.", project: "content", status: "in-progress", dueDate: daysFromNow(3), assignee: "JD", priority: "medium", difficulty: "intermediate", comments: [] },
       { id: "task-9", title: "Create a simple welcome checklist", description: "List the first three steps a new customer should take. Keep each step short and link to the right help page.", project: "brand", status: "todo", dueDate: daysFromNow(6), assignee: "AL", priority: "low", difficulty: "beginner", estimatedMinutes: 30, dependencies: [], comments: [] },
-      { id: "task-10", title: "Check homepage on mobile and tablet", description: "Review the homepage at phone, tablet, and desktop widths. Record any layout issues and attach a screenshot for each one.", project: "website", status: "todo", dueDate: daysFromNow(3), assignee: "MK", priority: "medium", difficulty: "intermediate", estimatedMinutes: 75, dependencies: ["task-1"], comments: [] },
-      { id: "task-11", title: "Audit keyboard access and contrast", description: "Test the main conversion flow without a mouse. Check focus order, visible focus, labels, and text contrast; write a prioritized fix list.", project: "website", status: "todo", dueDate: daysFromNow(8), assignee: "SC", priority: "high", difficulty: "hard", estimatedMinutes: 180, dependencies: ["task-10"], comments: [] },
+      { id: "task-10", title: "Check homepage on mobile and tablet", description: "Review the homepage at phone, tablet, and desktop widths. Record layout issues in this task's comments and create subtasks for fixes the team agrees to make.", project: "website", status: "todo", dueDate: daysFromNow(3), assignee: "MK", priority: "medium", difficulty: "intermediate", estimatedMinutes: 75, dependencies: [], parentTaskId: "task-1", comments: [] },
+      { id: "task-11", title: "Audit keyboard access and contrast", description: "Test the main conversion flow without a mouse. Record focus order, visible-focus, label, and contrast issues in task comments, then add subtasks for agreed fixes.", project: "website", status: "todo", dueDate: daysFromNow(8), assignee: "SC", priority: "high", difficulty: "hard", estimatedMinutes: 180, dependencies: [], parentTaskId: "task-10", comments: [] },
       { id: "task-12", title: "Prepare launch email subject lines", description: "Write five subject line options and preview text. Keep them clear, distinct, and within the team's character limit.", project: "launch", status: "todo", dueDate: daysFromNow(4), assignee: "JD", priority: "medium", difficulty: "beginner", estimatedMinutes: 40, dependencies: [], comments: [] },
       { id: "task-13", title: "Build release-day runbook", description: "Document launch owners, go/no-go checks, monitoring links, rollback criteria, and customer communications. Walk through a failure scenario with the team.", project: "launch", status: "todo", dueDate: daysFromNow(9), assignee: "MK", priority: "high", difficulty: "hard", estimatedMinutes: 240, dependencies: ["task-6", "task-3"], comments: [] },
       { id: "task-14", title: "Draft social posts from campaign themes", description: "Turn the three campaign themes into a week of social posts. Vary the format and include a clear next step in each post.", project: "content", status: "todo", dueDate: daysFromNow(5), assignee: "SC", priority: "medium", difficulty: "intermediate", estimatedMinutes: 90, dependencies: ["task-8"], comments: [] },
       { id: "task-15", title: "Recommend the next content experiment", description: "Compare recent engagement by channel and theme, note limitations in the data, and propose one measurable experiment with a success threshold.", project: "content", status: "todo", dueDate: daysFromNow(10), assignee: "AL", priority: "high", difficulty: "hard", estimatedMinutes: 150, dependencies: ["task-4", "task-14"], comments: [] },
       { id: "task-16", title: "Export brand colors with contrast notes", description: "Create reusable color swatches for the team and record which text/background pairings meet the agreed contrast target.", project: "brand", status: "todo", dueDate: daysFromNow(7), assignee: "JD", priority: "medium", difficulty: "intermediate", estimatedMinutes: 60, dependencies: ["task-2"], comments: [] },
-      { id: "task-17", title: "Organize launch assets", description: "Gather approved logos, screenshots, and copy in the shared launch folder. Use the naming guide and remove outdated drafts.", project: "launch", status: "todo", dueDate: daysFromNow(6), assignee: "SC", priority: "low", difficulty: "beginner", estimatedMinutes: 45, dependencies: ["task-6"], comments: [] },
+      { id: "task-17", title: "Organize launch asset reviews", description: "Add a subtask for each launch asset that still needs review. Put the asset name and reviewer in the subtask description, then comment with the review result.", project: "launch", status: "todo", dueDate: daysFromNow(6), assignee: "SC", priority: "low", difficulty: "beginner", estimatedMinutes: 45, dependencies: [], parentTaskId: "task-6", comments: [] },
       { id: "task-18", title: "Review launch pricing scenarios", description: "Model the expected monthly revenue and support impact for three pricing options. State assumptions, edge cases, and a recommendation for review.", project: "launch", status: "todo", dueDate: daysFromNow(12), assignee: "AL", priority: "high", difficulty: "hard", estimatedMinutes: 210, dependencies: ["task-3"], comments: [] },
       { id: "task-19", title: "Prepare a five-minute project update", description: "Summarize progress, open decisions, risks, and the next milestone in a short update for the weekly team meeting.", project: "content", status: "todo", dueDate: daysFromNow(2), assignee: "JD", priority: "low", difficulty: "beginner", estimatedMinutes: 25, dependencies: [], comments: [] },
       { id: "task-20", title: "Compare campaign performance by audience", description: "Segment campaign results by audience, compare against the previous period, and explain which differences are meaningful versus likely noise.", project: "content", status: "todo", dueDate: daysFromNow(11), assignee: "MK", priority: "high", difficulty: "hard", estimatedMinutes: 180, dependencies: ["task-4"], comments: [] }
@@ -171,7 +171,12 @@ function parseWorkspace(value) {
       throw new Error(`Task "${task.title}" has invalid prerequisites.`);
     }
     task.dependencies = [...new Set(task.dependencies || [])];
+    if (task.parentTaskId !== undefined && task.parentTaskId !== null && typeof task.parentTaskId !== "string") {
+      throw new Error(`Task "${task.title}" has an invalid parent task.`);
+    }
+    task.parentTaskId = task.parentTaskId || null;
     if (task.dependencies.includes(task.id)) throw new Error(`Task "${task.title}" cannot depend on itself.`);
+    if (task.parentTaskId === task.id) throw new Error(`Task "${task.title}" cannot be its own parent.`);
     if (!["JD", "AL", "MK", "SC"].includes(task.assignee)) task.assignee = "JD";
     if (!["low", "medium", "high"].includes(task.priority)) task.priority = "medium";
     if (!Array.isArray(task.comments)) task.comments = [];
@@ -202,6 +207,8 @@ function parseWorkspace(value) {
   }
   const taskById = new Map(value.tasks.map((task) => [task.id, task]));
   for (const task of value.tasks) {
+    if (task.parentTaskId && !taskById.has(task.parentTaskId)) throw new Error(`Task "${task.title}" refers to a parent that does not exist.`);
+    task.dependencies = task.dependencies.filter((dependencyId) => dependencyId !== task.parentTaskId);
     for (const dependencyId of task.dependencies) {
       if (!taskById.has(dependencyId)) throw new Error(`Task "${task.title}" refers to a prerequisite that does not exist.`);
     }
@@ -217,6 +224,46 @@ function parseWorkspace(value) {
     visited.add(taskId);
   }
   for (const task of value.tasks) visit(task.id);
+  const parentVisiting = new Set();
+  const parentVisited = new Set();
+  function visitParent(taskId) {
+    if (parentVisiting.has(taskId)) throw new Error("Task nesting cannot contain a cycle.");
+    if (parentVisited.has(taskId)) return;
+    parentVisiting.add(taskId);
+    const parentId = taskById.get(taskId).parentTaskId;
+    if (parentId) visitParent(parentId);
+    parentVisiting.delete(taskId);
+    parentVisited.add(taskId);
+  }
+  for (const task of value.tasks) visitParent(task.id);
+  const requirementVisiting = new Set();
+  const requirementVisited = new Set();
+  function visitRequirements(taskId) {
+    if (requirementVisiting.has(taskId)) throw new Error("Task prerequisites and subtasks cannot create a completion cycle.");
+    if (requirementVisited.has(taskId)) return;
+    requirementVisiting.add(taskId);
+    const task = taskById.get(taskId);
+    const requiredTaskIds = [
+      ...task.dependencies,
+      ...value.tasks.filter((child) => child.parentTaskId === taskId).map((child) => child.id)
+    ];
+    for (const requiredTaskId of requiredTaskIds) visitRequirements(requiredTaskId);
+    requirementVisiting.delete(taskId);
+    requirementVisited.add(taskId);
+  }
+  for (const task of value.tasks) visitRequirements(task.id);
+  let reopened;
+  do {
+    reopened = false;
+    for (const task of value.tasks) {
+      if (task.status === "done" && value.tasks.some((child) => child.parentTaskId === task.id && child.status !== "done")) {
+        task.status = "todo";
+        delete task.completedAt;
+        delete task.completionReview;
+        reopened = true;
+      }
+    }
+  } while (reopened);
   return {
     projects: value.projects,
     tasks: value.tasks,
@@ -229,14 +276,44 @@ function getTask(id) {
 }
 
 function isTaskBlocked(task) {
-  return task.status !== "done" && (task.dependencies || []).some((id) => getTask(id)?.status !== "done");
+  return task.status !== "done" && (
+    (task.dependencies || []).some((id) => getTask(id)?.status !== "done") ||
+    taskChildren(task.id).some((child) => child.status !== "done")
+  );
 }
 
-function hasDependencyPath(fromId, toId, seen = new Set()) {
+function hasRequirementPath(fromId, toId, seen = new Set()) {
   if (fromId === toId) return true;
   if (seen.has(fromId)) return false;
   seen.add(fromId);
-  return (getTask(fromId)?.dependencies || []).some((id) => hasDependencyPath(id, toId, seen));
+  const task = getTask(fromId);
+  if (!task) return false;
+  return [
+    ...(task.dependencies || []),
+    ...taskChildren(task.id).map((child) => child.id)
+  ].some((id) => hasRequirementPath(id, toId, seen));
+}
+
+function taskChildren(taskId) {
+  return state.tasks.filter((task) => task.parentTaskId === taskId);
+}
+
+function hasParentPath(fromId, toId) {
+  let task = getTask(fromId);
+  while (task) {
+    if (task.id === toId) return true;
+    task = task.parentTaskId ? getTask(task.parentTaskId) : null;
+  }
+  return false;
+}
+
+function taskTreeProgress(task) {
+  return taskChildren(task.id).reduce((progress, child) => {
+    const descendantProgress = taskTreeProgress(child);
+    progress.total += 1 + descendantProgress.total;
+    progress.done += (child.status === "done" ? 1 : 0) + descendantProgress.done;
+    return progress;
+  }, { done: 0, total: 0 });
 }
 
 function scopedTasks() {
@@ -316,9 +393,29 @@ function renderDependencyOptions(selectedIds) {
   const task = editingTaskId && getTask(editingTaskId);
   const selected = new Set(selectedIds === undefined ? task?.dependencies || [] : selectedIds);
   select.innerHTML = state.tasks
-    .filter((item) => item.id !== editingTaskId)
+    .filter((item) => item.id !== editingTaskId && (!editingTaskId || !hasRequirementPath(item.id, editingTaskId)))
     .map((item) => `<option value="${escapeHtml(item.id)}"${selected.has(item.id) ? " selected" : ""}>${escapeHtml(item.title)}${item.status === "done" ? " · completed" : ""}</option>`)
     .join("");
+  renderParentOptions();
+}
+
+function renderParentOptions(selectedParentId) {
+  const select = document.getElementById("taskParent");
+  if (!select) return;
+  const task = editingTaskId && getTask(editingTaskId);
+  const selected = selectedParentId === undefined ? task?.parentTaskId || "" : selectedParentId || "";
+  const descendants = new Set();
+  function collectDescendants(id) {
+    taskChildren(id).forEach((child) => {
+      descendants.add(child.id);
+      collectDescendants(child.id);
+    });
+  }
+  if (editingTaskId) collectDescendants(editingTaskId);
+  select.innerHTML = `<option value="">No parent task</option>${state.tasks
+    .filter((item) => item.id !== editingTaskId && !descendants.has(item.id) && (!editingTaskId || !hasRequirementPath(editingTaskId, item.id)))
+    .map((item) => `<option value="${escapeHtml(item.id)}"${selected === item.id ? " selected" : ""}>${escapeHtml(item.title)}</option>`)
+    .join("")}`;
 }
 
 function renderStats() {
@@ -359,10 +456,12 @@ function taskRow(task) {
   const isOverdue = task.status !== "done" && task.dueDate && task.dueDate < new Date().toISOString().slice(0, 10);
   const blocked = isTaskBlocked(task);
   const label = blocked ? "Blocked" : statusLabel(task.status);
+  const tree = taskTreeProgress(task);
+  const children = taskChildren(task.id);
   return `<article class="task-row" data-task-row="${escapeHtml(task.id)}">
     <div class="task-main">
       <button class="task-check${task.status === "done" ? " completed" : ""}" type="button" data-toggle-task="${escapeHtml(task.id)}" aria-label="${task.status === "done" ? "Reopen" : "Complete and review"}: ${escapeHtml(task.title)}">${task.status === "done" ? '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 6 2.5 2.5L10 3"/></svg>' : ""}</button>
-      <div class="task-title-wrap" role="button" tabindex="0" data-open-task="${escapeHtml(task.id)}" aria-label="Open ${escapeHtml(task.title)}"><span class="task-title${task.status === "done" ? " is-done" : ""}">${escapeHtml(task.title)}</span><span class="task-row-subtitle"><span class="task-project-mobile">${escapeHtml(project?.name || "No project")}</span><span class="difficulty-badge difficulty-${escapeHtml(task.difficulty)}">${difficultyLabel(task.difficulty)}</span></span></div>
+      <div class="task-title-wrap" role="button" tabindex="0" data-open-task="${escapeHtml(task.id)}" aria-label="Open ${escapeHtml(task.title)}"><span class="task-title${task.status === "done" ? " is-done" : ""}">${escapeHtml(task.title)}</span><span class="task-row-subtitle"><span class="task-project-mobile">${escapeHtml(project?.name || "No project")}</span><span class="difficulty-badge difficulty-${escapeHtml(task.difficulty)}">${difficultyLabel(task.difficulty)}</span>${task.parentTaskId ? '<span class="subtask-indicator">Subtask</span>' : ""}${children.length ? `<span class="subtask-progress">${tree.done}/${tree.total} subtasks</span>` : ""}</span></div>
     </div>
     <span class="task-project"><span class="project-color ${escapeHtml(project?.color || "violet")}"></span>${escapeHtml(project?.name || "No project")}</span>
     <span class="status-pill status-${blocked ? "blocked" : escapeHtml(task.status)}">${label}</span>
@@ -484,7 +583,7 @@ function toggleTask(id) {
   if (!task) return;
   if (task.status !== "done") {
     if (isTaskBlocked(task)) {
-      showToast("Complete this task's prerequisites before marking it done.");
+      showToast("Complete this task's prerequisites and subtasks before marking it done.");
       return;
     }
     openCompletionReview(task.id);
@@ -493,10 +592,26 @@ function toggleTask(id) {
   task.status = "todo";
   delete task.completedAt;
   delete task.completionReview;
+  const reopenedAncestors = reopenCompletedAncestors(task.parentTaskId ? getTask(task.parentTaskId) : null);
   const saved = saveState();
   render();
   if (detailModal.open) renderTaskDetails();
-  if (saved) showToast("Task reopened. Its completion ratings were cleared.");
+  if (saved) showToast(reopenedAncestors ? `Task reopened with ${reopenedAncestors} parent task${reopenedAncestors === 1 ? "" : "s"}; completion reviews were cleared.` : "Task reopened. Its completion ratings were cleared.");
+}
+
+function reopenCompletedAncestors(task) {
+  let reopened = 0;
+  let current = task;
+  while (current) {
+    if (current.status === "done") {
+      current.status = "todo";
+      delete current.completedAt;
+      delete current.completionReview;
+      reopened += 1;
+    }
+    current = current.parentTaskId ? getTask(current.parentTaskId) : null;
+  }
+  return reopened;
 }
 
 function openTaskDetails(id) {
@@ -514,9 +629,18 @@ function renderTaskDetails() {
   const projectOptions = state.projects.map((project) => `<option value="${escapeHtml(project.id)}"${project.id === task.project ? " selected" : ""}>${escapeHtml(project.name)}</option>`).join("");
   const dependencies = (task.dependencies || []).map((id) => getTask(id)).filter(Boolean);
   const blockedBy = dependencies.filter((dependency) => dependency.status !== "done");
+  const children = taskChildren(task.id);
+  const progress = taskTreeProgress(task);
+  const parent = task.parentTaskId ? getTask(task.parentTaskId) : null;
   const dependencySection = dependencies.length
     ? `<section class="dependency-section"><h3>Prerequisites <span>${dependencies.length}</span></h3><ul>${dependencies.map((dependency) => `<li><button type="button" class="dependency-link${dependency.status === "done" ? " is-complete" : ""}" data-open-task="${escapeHtml(dependency.id)}">${escapeHtml(dependency.title)}</button><span>${dependency.status === "done" ? "Complete" : "Still open"}</span></li>`).join("")}</ul>${blockedBy.length ? `<p class="blocked-note">This task is blocked until ${blockedBy.length === 1 ? "its prerequisite is" : "all prerequisites are"} complete.</p>` : ""}</section>`
     : "";
+  const hierarchySection = children.length || parent
+    ? `<section class="task-hierarchy">
+        ${parent ? `<div class="parent-task-row"><span>Part of</span><button type="button" class="dependency-link" data-open-task="${escapeHtml(parent.id)}">${escapeHtml(parent.title)}</button></div>` : ""}
+        ${children.length ? `<div class="subtask-heading"><div><h3>Subtasks</h3><span>${progress.done} of ${progress.total} complete</span></div><button class="text-action" type="button" data-add-subtask="${escapeHtml(task.id)}">Add subtask</button></div><div class="subtask-progress-track" role="progressbar" aria-label="Subtask progress" aria-valuenow="${progress.done}" aria-valuemin="0" aria-valuemax="${progress.total}"><span style="width:${progress.total ? Math.round(progress.done / progress.total * 100) : 0}%"></span></div><ul class="subtask-list">${children.map((child) => `<li><button type="button" class="subtask-link" data-open-task="${escapeHtml(child.id)}">${escapeHtml(child.title)}</button><span class="difficulty-badge difficulty-${escapeHtml(child.difficulty)}">${difficultyLabel(child.difficulty)}</span><span class="status-pill status-${isTaskBlocked(child) ? "blocked" : escapeHtml(child.status)}">${isTaskBlocked(child) ? "Blocked" : statusLabel(child.status)}</span></li>`).join("")}</ul>` : ""}
+      </section>`
+    : `<section class="task-hierarchy empty-hierarchy"><button class="text-action" type="button" data-add-subtask="${escapeHtml(task.id)}">+ Add a subtask</button></section>`;
   const comments = task.comments.length ? task.comments.map((comment) => `<article class="comment"><span class="assignee assignee-${escapeHtml(comment.author)}">${escapeHtml(comment.author)}</span><div class="comment-body"><div class="comment-byline"><strong>${escapeHtml(getPerson(comment.author))}</strong><time datetime="${escapeHtml(comment.createdAt)}">${escapeHtml(formatCommentDate(comment.createdAt))}</time></div><p class="comment-text">${escapeHtml(comment.text)}</p></div></article>`).join("") : '<p class="comment-empty">No comments yet. Start the conversation.</p>';
   const review = task.completionReview;
   const reviewCard = review
@@ -528,10 +652,12 @@ function renderTaskDetails() {
     <div class="detail-properties">
       <label class="detail-property"><span class="detail-property-label">Status</span><span class="detail-property-value"><select data-task-field="status" aria-label="Task status"><option value="todo"${task.status === "todo" ? " selected" : ""}>To do</option><option value="in-progress"${task.status === "in-progress" ? " selected" : ""}>In progress</option><option value="done"${task.status === "done" ? " selected" : ""}>${task.completionReview ? "Completed" : "Completed (add review)"}</option></select></span></label>
       <label class="detail-property"><span class="detail-property-label">Difficulty</span><span class="detail-property-value"><select data-task-field="difficulty" aria-label="Task difficulty"><option value="beginner"${task.difficulty === "beginner" ? " selected" : ""}>Beginner</option><option value="intermediate"${task.difficulty === "intermediate" ? " selected" : ""}>Intermediate</option><option value="hard"${task.difficulty === "hard" ? " selected" : ""}>Hard</option></select></span></label>
+      <label class="detail-property"><span class="detail-property-label">Parent task</span><span class="detail-property-value"><select data-task-field="parentTaskId" aria-label="Parent task"><option value="">None</option>${state.tasks.filter((item) => item.id !== task.id && !hasParentPath(item.id, task.id) && !hasRequirementPath(task.id, item.id)).map((item) => `<option value="${escapeHtml(item.id)}"${task.parentTaskId === item.id ? " selected" : ""}>${escapeHtml(item.title)}</option>`).join("")}</select></span></label>
       <label class="detail-property"><span class="detail-property-label">Project</span><span class="detail-property-value"><select data-task-field="project" aria-label="Task project">${projectOptions}</select></span></label>
       <div class="detail-property"><span class="detail-property-label">Assignee</span><span class="detail-property-value"><span class="assignee assignee-${escapeHtml(task.assignee)}">${escapeHtml(task.assignee)}</span>${escapeHtml(getPerson(task.assignee))}</span></div>
       <div class="detail-property"><span class="detail-property-label">Due date</span><span class="detail-property-value">${escapeHtml(formatDate(task.dueDate))}</span></div>
     </div>
+    ${hierarchySection}
     ${dependencySection}
     ${task.estimatedMinutes ? `<p class="estimate-line">Estimated effort: <strong>${escapeHtml(task.estimatedMinutes)} minutes</strong></p>` : ""}
     ${reviewCard}
@@ -540,12 +666,13 @@ function renderTaskDetails() {
     </section>`;
 }
 
-function openTaskForm(taskId = null) {
+function openTaskForm(taskId = null, parentTaskId = null) {
   editingTaskId = taskId;
   const form = document.getElementById("taskForm");
   const task = taskId ? state.tasks.find((item) => item.id === taskId) : null;
   form.reset();
   renderDependencyOptions(task?.dependencies || []);
+  renderParentOptions(task ? task.parentTaskId : parentTaskId);
   document.getElementById("taskModalTitle").textContent = task ? "Edit task" : "Create a task";
   document.getElementById("taskModalKicker").textContent = task ? "UPDATE YOUR WORKSPACE" : "ADD TO YOUR WORKSPACE";
   form.querySelector('[type="submit"]').textContent = task ? "Save changes" : "Create task";
@@ -558,6 +685,7 @@ function openTaskForm(taskId = null) {
     form.elements.priority.value = task.priority;
     form.elements.difficulty.value = task.difficulty;
     form.elements.estimatedMinutes.value = task.estimatedMinutes || "";
+    form.elements.parentTaskId.value = task.parentTaskId || "";
   } else if (activeProject) {
     form.elements.project.value = activeProject;
   }
@@ -625,12 +753,26 @@ function handleNewTask(event) {
   const title = String(formData.get("title") || "").trim();
   if (!title) return;
   const dependencies = [...new Set(formData.getAll("dependencies").map(String))].filter((id) => id !== editingTaskId);
+  const parentTaskId = String(formData.get("parentTaskId") || "") || null;
   if (dependencies.some((id) => !getTask(id))) {
     showToast("A selected prerequisite no longer exists. Refresh the form and try again.");
     return;
   }
-  if (editingTaskId && dependencies.some((id) => hasDependencyPath(id, editingTaskId))) {
-    showToast("That prerequisite would create a dependency cycle. Choose another task.");
+  if (editingTaskId && dependencies.some((id) => hasRequirementPath(id, editingTaskId))) {
+    showToast("That prerequisite would create a completion cycle with the current task hierarchy. Choose another task.");
+    return;
+  }
+  const taskRequirements = [
+    ...dependencies,
+    ...(editingTaskId ? taskChildren(editingTaskId).map((child) => child.id) : [])
+  ];
+  if (parentTaskId && (
+    !getTask(parentTaskId) ||
+    parentTaskId === editingTaskId ||
+    hasParentPath(parentTaskId, editingTaskId) ||
+    taskRequirements.some((id) => hasRequirementPath(id, parentTaskId))
+  )) {
+    showToast("That parent would create an invalid hierarchy or completion cycle. Choose another task.");
     return;
   }
   const taskFields = {
@@ -642,18 +784,25 @@ function handleNewTask(event) {
     priority: String(formData.get("priority") || "medium"),
     difficulty: String(formData.get("difficulty") || "intermediate"),
     estimatedMinutes: Number(formData.get("estimatedMinutes")) || null,
+    parentTaskId,
     dependencies
   };
   const updatedTaskId = editingTaskId;
+  let createdTaskId = null;
+  let previousParentTaskId = null;
   if (editingTaskId) {
     const task = state.tasks.find((item) => item.id === editingTaskId);
     if (!task) {
       showToast("This task no longer exists. Refresh the page and try again.");
       return;
     }
+    previousParentTaskId = task.parentTaskId || null;
     Object.assign(task, taskFields);
+    if (parentTaskId && previousParentTaskId !== parentTaskId) reopenCompletedAncestors(getTask(parentTaskId));
   } else {
-    state.tasks.unshift({ id: createId("task"), ...taskFields, status: "todo", comments: [] });
+    createdTaskId = createId("task");
+    state.tasks.unshift({ id: createdTaskId, ...taskFields, status: "todo", comments: [] });
+    if (parentTaskId) reopenCompletedAncestors(getTask(parentTaskId));
   }
   const wasEditing = Boolean(editingTaskId);
   editingTaskId = null;
@@ -667,6 +816,7 @@ function handleNewTask(event) {
   taskModal.close();
   event.currentTarget.reset();
   if (wasEditing) openTaskDetails(updatedTaskId);
+  else if (parentTaskId) openTaskDetails(createdTaskId);
   if (saved) showToast(wasEditing ? "Task updated." : "Task created. You're off to a great start!");
 }
 
@@ -780,7 +930,7 @@ document.getElementById("completionForm").addEventListener("submit", (event) => 
   }
   if (isTaskBlocked(task)) {
     completionModal.close();
-    showToast("Complete this task's prerequisites before marking it done.");
+    showToast("Complete this task's prerequisites and subtasks before marking it done.");
     return;
   }
   const formData = new FormData(event.currentTarget);
@@ -840,7 +990,7 @@ detailModal.addEventListener("change", (event) => {
   if (!task) return;
   if (field === "status" && event.target.value === "done" && task.status !== "done") {
     if (isTaskBlocked(task)) {
-      showToast("Complete this task's prerequisites before marking it done.");
+      showToast("Complete this task's prerequisites and subtasks before marking it done.");
       renderTaskDetails();
       return;
     }
@@ -848,7 +998,19 @@ detailModal.addEventListener("change", (event) => {
     openCompletionReview(task.id);
     return;
   }
-  task[field] = event.target.value;
+  const value = event.target.value;
+  if (field === "parentTaskId") {
+    if (value && (!getTask(value) || value === task.id || hasParentPath(value, task.id) || hasRequirementPath(task.id, value))) {
+      showToast("That parent would create an invalid hierarchy or completion cycle. Choose another task.");
+      renderTaskDetails();
+      return;
+    }
+    const previousParentTaskId = task.parentTaskId || null;
+    task.parentTaskId = value || null;
+    if (task.parentTaskId && task.parentTaskId !== previousParentTaskId) reopenCompletedAncestors(getTask(task.parentTaskId));
+  } else {
+    task[field] = value;
+  }
   if (field === "status" && task.status !== "done") {
     delete task.completedAt;
     delete task.completionReview;
@@ -859,9 +1021,13 @@ detailModal.addEventListener("change", (event) => {
 });
 
 detailModal.addEventListener("click", (event) => {
-  const prerequisite = event.target.closest(".dependency-link[data-open-task]");
-  if (prerequisite) {
-    openTaskDetails(prerequisite.dataset.openTask);
+  const openTask = event.target.closest("[data-open-task]");
+  if (openTask) {
+    openTaskDetails(openTask.dataset.openTask);
+  } else if (event.target.closest("[data-add-subtask]")) {
+    const parentTaskId = event.target.closest("[data-add-subtask]").dataset.addSubtask;
+    detailModal.close();
+    openTaskForm(null, parentTaskId);
   } else if (event.target.closest("[data-edit-task]")) {
     const taskId = selectedTaskId;
     detailModal.close();
@@ -871,12 +1037,19 @@ detailModal.addEventListener("click", (event) => {
     if (!task || !window.confirm(`Delete "${task.title}" and its comments? This cannot be undone unless you have a backup.`)) return;
     const affected = state.tasks.filter((item) => (item.dependencies || []).includes(task.id));
     affected.forEach((item) => { item.dependencies = item.dependencies.filter((id) => id !== task.id); });
+    const children = taskChildren(task.id);
+    children.forEach((child) => { child.parentTaskId = task.parentTaskId || null; });
     state.tasks = state.tasks.filter((item) => item.id !== task.id);
     detailModal.close();
     selectedTaskId = null;
     const saved = saveState();
     render();
-    if (saved) showToast(affected.length ? `Task deleted and removed from ${affected.length} prerequisite list${affected.length === 1 ? "" : "s"}.` : "Task deleted.");
+    if (saved) {
+      const updates = [];
+      if (affected.length) updates.push(`removed it from ${affected.length} prerequisite list${affected.length === 1 ? "" : "s"}`);
+      if (children.length) updates.push(`moved ${children.length} subtask${children.length === 1 ? "" : "s"} up one level`);
+      showToast(updates.length ? `Task deleted; ${updates.join(" and ")}.` : "Task deleted.");
+    }
   } else if (event.target.closest("[data-edit-review]")) {
     openCompletionReview(selectedTaskId);
   }
