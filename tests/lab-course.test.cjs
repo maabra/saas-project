@@ -75,5 +75,6 @@ test('older course completions remain saved while expanded difficulties gain new
   const app = launch(storage);
   assert.deepEqual(app.state().completed, ['money', 'seats']);
   assert.match(app.nodes.get('incident').innerHTML, /Search misses/);
-  assert.match(app.nodes.get('curriculum').innerHTML, /beginner - 2\/3/);
+  assert.match(app.nodes.get('curriculum').innerHTML, /Beginner - 2\/3/);
+  assert.match(app.nodes.get('curriculum').innerHTML, /Hard - 0\/3/);
 });

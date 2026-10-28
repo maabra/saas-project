@@ -17,15 +17,28 @@ function daysFromNow(days) {
 function createInitialState() {
   return {
     projects: initialProjects,
+    inboxRead: [],
     tasks: [
-      { id: "task-1", title: "Finalize homepage wireframes", description: "Review the latest homepage wireframes with the team and collect final feedback before handoff.", project: "website", status: "in-progress", dueDate: daysFromNow(0), assignee: "JD", priority: "high", comments: [{ id: "comment-1", author: "AL", text: "The updated hero section looks great. I left a couple of notes on the mobile flow.", createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString() }] },
-      { id: "task-2", title: "Gather inspiration for color palette", description: "Put together a small collection of references for the refreshed brand palette.", project: "brand", status: "todo", dueDate: daysFromNow(1), assignee: "MK", priority: "medium", comments: [] },
-      { id: "task-3", title: "Write launch announcement", description: "Draft a friendly product launch announcement for the newsletter and social channels.", project: "launch", status: "in-progress", dueDate: daysFromNow(2), assignee: "SC", priority: "high", comments: [{ id: "comment-2", author: "JD", text: "Let's keep the first paragraph short and focus on the new collaboration features.", createdAt: new Date(Date.now() - 1000 * 60 * 60 * 20).toISOString() }] },
-      { id: "task-4", title: "Review Q4 content calendar", description: "Check dates, owners, and themes for the next content calendar.", project: "content", status: "todo", dueDate: daysFromNow(4), assignee: "AL", priority: "low", comments: [] },
-      { id: "task-5", title: "Share moodboard with the team", description: "Share the initial moodboard and collect thoughts in the project comments.", project: "brand", status: "done", completedAt: new Date(Date.now() - 1000 * 60 * 60 * 22).toISOString(), estimatedMinutes: 90, completionReview: { efficiency: 4, quality: 5, actualMinutes: 75, notes: "The shared reference board made review quick." }, dueDate: daysFromNow(-1), assignee: "JD", priority: "medium", comments: [] },
-      { id: "task-6", title: "Set up launch checklist", description: "Make sure each launch milestone has an owner and a clear due date.", project: "launch", status: "todo", dueDate: daysFromNow(5), assignee: "MK", priority: "medium", comments: [] },
-      { id: "task-7", title: "Collect customer quotes", description: "Find a few short customer quotes for the new homepage.", project: "website", status: "done", completedAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), estimatedMinutes: 45, completionReview: { efficiency: 3, quality: 4, actualMinutes: 50, notes: "Next time, collect quotes as they arrive." }, dueDate: daysFromNow(-2), assignee: "SC", priority: "low", comments: [] },
-      { id: "task-8", title: "Plan next week's social posts", description: "Draft post ideas and line them up with the product launch.", project: "content", status: "in-progress", dueDate: daysFromNow(3), assignee: "JD", priority: "medium", comments: [] }
+      { id: "task-1", title: "Finalize homepage wireframes", description: "Review the latest homepage wireframes with the team and collect final feedback before handoff.", project: "website", status: "in-progress", dueDate: daysFromNow(0), assignee: "JD", priority: "high", difficulty: "intermediate", comments: [{ id: "comment-1", author: "AL", text: "The updated hero section looks great. I left a couple of notes on the mobile flow.", createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString() }] },
+      { id: "task-2", title: "Gather inspiration for color palette", description: "Put together a small collection of references for the refreshed brand palette.", project: "brand", status: "todo", dueDate: daysFromNow(1), assignee: "MK", priority: "medium", difficulty: "beginner", comments: [] },
+      { id: "task-3", title: "Write launch announcement", description: "Draft a friendly product launch announcement for the newsletter and social channels.", project: "launch", status: "in-progress", dueDate: daysFromNow(2), assignee: "SC", priority: "high", difficulty: "intermediate", comments: [{ id: "comment-2", author: "JD", text: "Let's keep the first paragraph short and focus on the new collaboration features.", createdAt: new Date(Date.now() - 1000 * 60 * 60 * 20).toISOString() }] },
+      { id: "task-4", title: "Review Q4 content calendar", description: "Check dates, owners, and themes for the next content calendar.", project: "content", status: "todo", dueDate: daysFromNow(4), assignee: "AL", priority: "low", difficulty: "beginner", comments: [] },
+      { id: "task-5", title: "Share moodboard with the team", description: "Share the initial moodboard and collect thoughts in the project comments.", project: "brand", status: "done", completedAt: new Date(Date.now() - 1000 * 60 * 60 * 22).toISOString(), estimatedMinutes: 90, completionReview: { efficiency: 4, quality: 5, actualMinutes: 75, notes: "The shared reference board made review quick." }, dueDate: daysFromNow(-1), assignee: "JD", priority: "medium", difficulty: "intermediate", comments: [] },
+      { id: "task-6", title: "Set up launch checklist", description: "Make sure each launch milestone has an owner and a clear due date.", project: "launch", status: "todo", dueDate: daysFromNow(5), assignee: "MK", priority: "medium", difficulty: "beginner", comments: [] },
+      { id: "task-7", title: "Collect customer quotes", description: "Find a few short customer quotes for the new homepage.", project: "website", status: "done", completedAt: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(), estimatedMinutes: 45, completionReview: { efficiency: 3, quality: 4, actualMinutes: 50, notes: "Next time, collect quotes as they arrive." }, dueDate: daysFromNow(-2), assignee: "SC", priority: "low", difficulty: "beginner", comments: [] },
+      { id: "task-8", title: "Plan next week's social posts", description: "Draft post ideas and line them up with the product launch.", project: "content", status: "in-progress", dueDate: daysFromNow(3), assignee: "JD", priority: "medium", difficulty: "intermediate", comments: [] },
+      { id: "task-9", title: "Create a simple welcome checklist", description: "List the first three steps a new customer should take. Keep each step short and link to the right help page.", project: "brand", status: "todo", dueDate: daysFromNow(6), assignee: "AL", priority: "low", difficulty: "beginner", estimatedMinutes: 30, dependencies: [], comments: [] },
+      { id: "task-10", title: "Check homepage on mobile and tablet", description: "Review the homepage at phone, tablet, and desktop widths. Record any layout issues and attach a screenshot for each one.", project: "website", status: "todo", dueDate: daysFromNow(3), assignee: "MK", priority: "medium", difficulty: "intermediate", estimatedMinutes: 75, dependencies: ["task-1"], comments: [] },
+      { id: "task-11", title: "Audit keyboard access and contrast", description: "Test the main conversion flow without a mouse. Check focus order, visible focus, labels, and text contrast; write a prioritized fix list.", project: "website", status: "todo", dueDate: daysFromNow(8), assignee: "SC", priority: "high", difficulty: "hard", estimatedMinutes: 180, dependencies: ["task-10"], comments: [] },
+      { id: "task-12", title: "Prepare launch email subject lines", description: "Write five subject line options and preview text. Keep them clear, distinct, and within the team's character limit.", project: "launch", status: "todo", dueDate: daysFromNow(4), assignee: "JD", priority: "medium", difficulty: "beginner", estimatedMinutes: 40, dependencies: [], comments: [] },
+      { id: "task-13", title: "Build release-day runbook", description: "Document launch owners, go/no-go checks, monitoring links, rollback criteria, and customer communications. Walk through a failure scenario with the team.", project: "launch", status: "todo", dueDate: daysFromNow(9), assignee: "MK", priority: "high", difficulty: "hard", estimatedMinutes: 240, dependencies: ["task-6", "task-3"], comments: [] },
+      { id: "task-14", title: "Draft social posts from campaign themes", description: "Turn the three campaign themes into a week of social posts. Vary the format and include a clear next step in each post.", project: "content", status: "todo", dueDate: daysFromNow(5), assignee: "SC", priority: "medium", difficulty: "intermediate", estimatedMinutes: 90, dependencies: ["task-8"], comments: [] },
+      { id: "task-15", title: "Recommend the next content experiment", description: "Compare recent engagement by channel and theme, note limitations in the data, and propose one measurable experiment with a success threshold.", project: "content", status: "todo", dueDate: daysFromNow(10), assignee: "AL", priority: "high", difficulty: "hard", estimatedMinutes: 150, dependencies: ["task-4", "task-14"], comments: [] },
+      { id: "task-16", title: "Export brand colors with contrast notes", description: "Create reusable color swatches for the team and record which text/background pairings meet the agreed contrast target.", project: "brand", status: "todo", dueDate: daysFromNow(7), assignee: "JD", priority: "medium", difficulty: "intermediate", estimatedMinutes: 60, dependencies: ["task-2"], comments: [] },
+      { id: "task-17", title: "Organize launch assets", description: "Gather approved logos, screenshots, and copy in the shared launch folder. Use the naming guide and remove outdated drafts.", project: "launch", status: "todo", dueDate: daysFromNow(6), assignee: "SC", priority: "low", difficulty: "beginner", estimatedMinutes: 45, dependencies: ["task-6"], comments: [] },
+      { id: "task-18", title: "Review launch pricing scenarios", description: "Model the expected monthly revenue and support impact for three pricing options. State assumptions, edge cases, and a recommendation for review.", project: "launch", status: "todo", dueDate: daysFromNow(12), assignee: "AL", priority: "high", difficulty: "hard", estimatedMinutes: 210, dependencies: ["task-3"], comments: [] },
+      { id: "task-19", title: "Prepare a five-minute project update", description: "Summarize progress, open decisions, risks, and the next milestone in a short update for the weekly team meeting.", project: "content", status: "todo", dueDate: daysFromNow(2), assignee: "JD", priority: "low", difficulty: "beginner", estimatedMinutes: 25, dependencies: [], comments: [] },
+      { id: "task-20", title: "Compare campaign performance by audience", description: "Segment campaign results by audience, compare against the previous period, and explain which differences are meaningful versus likely noise.", project: "content", status: "todo", dueDate: daysFromNow(11), assignee: "MK", priority: "high", difficulty: "hard", estimatedMinutes: 180, dependencies: ["task-4"], comments: [] }
     ]
   };
 }
@@ -44,6 +57,8 @@ function loadState() {
 
 let state = loadState();
 let activeFilter = "all";
+let activeDifficulty = "all";
+let activeInboxFilter = "all";
 let activeProject = null;
 let activeView = "overview";
 let selectedTaskId = null;
@@ -123,6 +138,9 @@ function parseWorkspace(value) {
   if (!value || !Array.isArray(value.projects) || !Array.isArray(value.tasks) || value.projects.length === 0) {
     throw new Error("A backup must include at least one project and a task list.");
   }
+  if (value.inboxRead !== undefined && (!Array.isArray(value.inboxRead) || value.inboxRead.some((id) => typeof id !== "string"))) {
+    throw new Error("The backup has invalid inbox read state.");
+  }
   const projectIds = new Set();
   for (const project of value.projects) {
     if (!project || typeof project.id !== "string" || !project.id || typeof project.name !== "string" || !project.name.trim()) {
@@ -148,6 +166,12 @@ function parseWorkspace(value) {
     }
     if (!projectIds.has(task.project)) throw new Error(`Task "${task.title}" refers to a project that does not exist.`);
     if (!["todo", "in-progress", "done"].includes(task.status)) throw new Error(`Task "${task.title}" has an invalid status.`);
+    if (!["beginner", "intermediate", "hard"].includes(task.difficulty)) task.difficulty = "intermediate";
+    if (task.dependencies !== undefined && (!Array.isArray(task.dependencies) || task.dependencies.some((id) => typeof id !== "string"))) {
+      throw new Error(`Task "${task.title}" has invalid prerequisites.`);
+    }
+    task.dependencies = [...new Set(task.dependencies || [])];
+    if (task.dependencies.includes(task.id)) throw new Error(`Task "${task.title}" cannot depend on itself.`);
     if (!["JD", "AL", "MK", "SC"].includes(task.assignee)) task.assignee = "JD";
     if (!["low", "medium", "high"].includes(task.priority)) task.priority = "medium";
     if (!Array.isArray(task.comments)) task.comments = [];
@@ -176,7 +200,43 @@ function parseWorkspace(value) {
       throw new Error(`Task "${task.title}" has an invalid estimate.`);
     }
   }
-  return { projects: value.projects, tasks: value.tasks };
+  const taskById = new Map(value.tasks.map((task) => [task.id, task]));
+  for (const task of value.tasks) {
+    for (const dependencyId of task.dependencies) {
+      if (!taskById.has(dependencyId)) throw new Error(`Task "${task.title}" refers to a prerequisite that does not exist.`);
+    }
+  }
+  const visited = new Set();
+  const visiting = new Set();
+  function visit(taskId) {
+    if (visiting.has(taskId)) throw new Error("Task prerequisites cannot contain a cycle.");
+    if (visited.has(taskId)) return;
+    visiting.add(taskId);
+    for (const dependencyId of taskById.get(taskId).dependencies) visit(dependencyId);
+    visiting.delete(taskId);
+    visited.add(taskId);
+  }
+  for (const task of value.tasks) visit(task.id);
+  return {
+    projects: value.projects,
+    tasks: value.tasks,
+    inboxRead: [...new Set(value.inboxRead || [])]
+  };
+}
+
+function getTask(id) {
+  return state.tasks.find((task) => task.id === id);
+}
+
+function isTaskBlocked(task) {
+  return task.status !== "done" && (task.dependencies || []).some((id) => getTask(id)?.status !== "done");
+}
+
+function hasDependencyPath(fromId, toId, seen = new Set()) {
+  if (fromId === toId) return true;
+  if (seen.has(fromId)) return false;
+  seen.add(fromId);
+  return (getTask(fromId)?.dependencies || []).some((id) => hasDependencyPath(id, toId, seen));
 }
 
 function scopedTasks() {
@@ -190,10 +250,11 @@ function scopedTasks() {
 function filteredTasks() {
   const query = searchInput.value.trim().toLowerCase();
   return scopedTasks().filter((task) => {
-    const matchesFilter = activeFilter === "all" || task.status === activeFilter;
+    const matchesFilter = activeFilter === "all" || (activeFilter === "blocked" ? isTaskBlocked(task) : task.status === activeFilter);
+    const matchesDifficulty = activeDifficulty === "all" || task.difficulty === activeDifficulty;
     const projectName = getProject(task.project)?.name || "";
-    const matchesSearch = !query || `${task.title} ${task.description} ${projectName}`.toLowerCase().includes(query);
-    return matchesFilter && matchesSearch;
+    const matchesSearch = !query || `${task.title} ${task.description} ${projectName} ${task.difficulty}`.toLowerCase().includes(query);
+    return matchesFilter && matchesDifficulty && matchesSearch;
   });
 }
 
@@ -207,6 +268,57 @@ function renderProjects() {
   const currentValue = projectSelect.value;
   projectSelect.innerHTML = state.projects.map((project) => `<option value="${escapeHtml(project.id)}">${escapeHtml(project.name)}</option>`).join("");
   if (state.projects.some((project) => project.id === currentValue)) projectSelect.value = currentValue;
+  renderDependencyOptions();
+  renderInboxCount();
+}
+
+function getInboxActivities() {
+  return state.tasks.flatMap((task) => [
+    ...(task.completedAt && task.status === "done" ? [{
+      id: `completed-${task.id}`,
+      taskId: task.id,
+      taskTitle: task.title,
+      project: getProject(task.project)?.name || "No project",
+      kind: "completed",
+      createdAt: task.completedAt
+    }] : []),
+    ...task.comments.map((comment) => ({
+      id: `comment-${comment.id}`,
+      taskId: task.id,
+      taskTitle: task.title,
+      project: getProject(task.project)?.name || "No project",
+      kind: "comment",
+      author: comment.author,
+      text: comment.text,
+      createdAt: comment.createdAt
+    }))
+  ]).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 50);
+}
+
+function renderInboxCount() {
+  const activities = getInboxActivities();
+  const unreadCount = activities.filter((activity) => !state.inboxRead.includes(activity.id)).length;
+  const sidebarCount = document.getElementById("inboxUnreadCount");
+  const notificationCount = document.getElementById("notificationCount");
+  sidebarCount.textContent = String(unreadCount);
+  sidebarCount.hidden = unreadCount === 0;
+  notificationCount.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+  notificationCount.hidden = unreadCount === 0;
+  document.getElementById("notificationButton").setAttribute(
+    "aria-label",
+    unreadCount ? `Open inbox, ${unreadCount} unread update${unreadCount === 1 ? "" : "s"}` : "Open inbox"
+  );
+}
+
+function renderDependencyOptions(selectedIds) {
+  const select = document.getElementById("taskDependencies");
+  if (!select) return;
+  const task = editingTaskId && getTask(editingTaskId);
+  const selected = new Set(selectedIds === undefined ? task?.dependencies || [] : selectedIds);
+  select.innerHTML = state.tasks
+    .filter((item) => item.id !== editingTaskId)
+    .map((item) => `<option value="${escapeHtml(item.id)}"${selected.has(item.id) ? " selected" : ""}>${escapeHtml(item.title)}${item.status === "done" ? " · completed" : ""}</option>`)
+    .join("");
 }
 
 function renderStats() {
@@ -238,28 +350,82 @@ function statusLabel(status) {
   return ({ todo: "To do", "in-progress": "In progress", done: "Completed" })[status] || "To do";
 }
 
+function difficultyLabel(difficulty) {
+  return ({ beginner: "Beginner", intermediate: "Intermediate", hard: "Hard" })[difficulty] || "Intermediate";
+}
+
 function taskRow(task) {
   const project = getProject(task.project);
   const isOverdue = task.status !== "done" && task.dueDate && task.dueDate < new Date().toISOString().slice(0, 10);
+  const blocked = isTaskBlocked(task);
+  const label = blocked ? "Blocked" : statusLabel(task.status);
   return `<article class="task-row" data-task-row="${escapeHtml(task.id)}">
     <div class="task-main">
       <button class="task-check${task.status === "done" ? " completed" : ""}" type="button" data-toggle-task="${escapeHtml(task.id)}" aria-label="${task.status === "done" ? "Reopen" : "Complete and review"}: ${escapeHtml(task.title)}">${task.status === "done" ? '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="m2 6 2.5 2.5L10 3"/></svg>' : ""}</button>
-      <div class="task-title-wrap" role="button" tabindex="0" data-open-task="${escapeHtml(task.id)}" aria-label="Open ${escapeHtml(task.title)}"><span class="task-title${task.status === "done" ? " is-done" : ""}">${escapeHtml(task.title)}</span><span class="task-project-mobile">${escapeHtml(project?.name || "No project")}</span></div>
+      <div class="task-title-wrap" role="button" tabindex="0" data-open-task="${escapeHtml(task.id)}" aria-label="Open ${escapeHtml(task.title)}"><span class="task-title${task.status === "done" ? " is-done" : ""}">${escapeHtml(task.title)}</span><span class="task-row-subtitle"><span class="task-project-mobile">${escapeHtml(project?.name || "No project")}</span><span class="difficulty-badge difficulty-${escapeHtml(task.difficulty)}">${difficultyLabel(task.difficulty)}</span></span></div>
     </div>
     <span class="task-project"><span class="project-color ${escapeHtml(project?.color || "violet")}"></span>${escapeHtml(project?.name || "No project")}</span>
-    <span class="status-pill status-${escapeHtml(task.status)}">${statusLabel(task.status)}</span>
+    <span class="status-pill status-${blocked ? "blocked" : escapeHtml(task.status)}">${label}</span>
     <span class="task-due${isOverdue ? " overdue" : ""}">${escapeHtml(formatDate(task.dueDate))}</span>
     <span class="task-meta"><span class="task-comments" aria-label="${task.comments.length} comments"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 7.5a5.5 5.5 0 0 1-8.2 4.8L2.5 13l.7-2.4a5.5 5.5 0 1 1 10.3-3.1Z"/></svg>${task.comments.length}</span><span class="assignee assignee-${escapeHtml(task.assignee)}" title="${escapeHtml(getPerson(task.assignee))}">${escapeHtml(task.assignee)}</span><i class="priority-dot ${escapeHtml(task.priority)}" title="${escapeHtml(task.priority)} priority"></i>${task.completionReview ? `<span class="task-rating" title="Efficiency ${task.completionReview.efficiency}/5 · Quality ${task.completionReview.quality}/5">★ ${task.completionReview.efficiency}</span>` : ""}</span>
   </article>`;
 }
 
 function renderTasks() {
+  const inbox = activeView === "inbox" && !activeProject;
+  document.getElementById("workspaceSummary").style.display = inbox ? "none" : "";
+  document.getElementById("weeklyProgress").style.display = inbox ? "none" : "";
+  document.getElementById("taskToolbar").style.display = inbox ? "none" : "";
+  document.getElementById("inboxToolbar").hidden = !inbox;
+  document.getElementById("viewAllButton").style.display = inbox ? "none" : "";
+  if (inbox) {
+    renderInbox();
+    return;
+  }
   const scoped = scopedTasks();
   const tasks = filteredTasks();
   taskList.innerHTML = tasks.length ? tasks.map(taskRow).join("") : '<div class="task-empty"><strong>Nothing on your plate</strong>Try another filter, or create a task to get started.</div>';
   document.getElementById("allCount").textContent = String(scoped.length);
-  document.getElementById("listFooter").innerHTML = `<span>Showing ${tasks.length} of ${scoped.length} task${scoped.length === 1 ? "" : "s"}</span><button type="button" data-clear-filters>Clear filters</button>`;
+  const difficultyCounts = ["beginner", "intermediate", "hard"].map((difficulty) =>
+    `${scoped.filter((task) => task.difficulty === difficulty).length} ${difficultyLabel(difficulty).toLowerCase()}`
+  ).join(" · ");
+  document.getElementById("listFooter").innerHTML = `<span>Showing ${tasks.length} of ${scoped.length} tasks <span class="difficulty-counts">${difficultyCounts}</span></span><button type="button" data-clear-filters>Clear filters</button>`;
   renderStats();
+}
+
+function renderInbox() {
+  const activities = getInboxActivities();
+  const unreadCount = activities.filter((activity) => !state.inboxRead.includes(activity.id)).length;
+  document.getElementById("inboxUnreadLabel").textContent = `${unreadCount} unread`;
+  document.getElementById("markAllReadButton").disabled = unreadCount === 0;
+  document.querySelectorAll("[data-inbox-filter]").forEach((button) => {
+    const selected = button.dataset.inboxFilter === activeInboxFilter;
+    button.classList.toggle("selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+  const visibleActivities = activities.filter((activity) =>
+    activeInboxFilter === "all" || !state.inboxRead.includes(activity.id)
+  );
+
+  taskList.innerHTML = visibleActivities.length
+    ? visibleActivities.map((activity) => {
+      const unread = !state.inboxRead.includes(activity.id);
+      return `<button class="activity-item${unread ? " is-unread" : ""}" type="button" data-open-task="${escapeHtml(activity.taskId)}" data-activity-id="${escapeHtml(activity.id)}" aria-label="${unread ? "Unread update: " : ""}${activity.kind === "completed" ? `${escapeHtml(activity.taskTitle)} was completed` : `${escapeHtml(getPerson(activity.author))} commented on ${escapeHtml(activity.taskTitle)}`}">
+        <span class="activity-icon ${activity.kind === "completed" ? "activity-icon-completed" : "activity-icon-comment"}" aria-hidden="true">${activity.kind === "completed" ? "✓" : '<svg viewBox="0 0 16 16"><path d="M13.5 7.5a5.5 5.5 0 0 1-8.2 4.8L2.5 13l.7-2.4a5.5 5.5 0 1 1 10.3-3.1Z"/></svg>'}</span>
+        <span class="activity-copy">
+          <span class="activity-summary">${activity.kind === "completed" ? `<strong>${escapeHtml(activity.taskTitle)}</strong> was completed` : `<strong>${escapeHtml(getPerson(activity.author))}</strong> commented on <strong>${escapeHtml(activity.taskTitle)}</strong>`}</span>
+          ${activity.kind === "comment" ? `<span class="activity-excerpt">${escapeHtml(activity.text)}</span>` : ""}
+          <span class="activity-project">${escapeHtml(activity.project)}</span>
+        </span>
+        ${unread ? '<span class="activity-unread-dot" aria-label="Unread"></span>' : ""}
+        <time class="activity-time" datetime="${escapeHtml(activity.createdAt)}">${escapeHtml(formatCommentDate(activity.createdAt))}</time>
+      </button>`;
+    }).join("")
+    : activeInboxFilter === "unread"
+      ? '<div class="task-empty"><strong>You’re all caught up</strong>New comments and completed work will appear here.</div>'
+      : '<div class="task-empty"><strong>No activity yet</strong>Comments and completed tasks will show up here.</div>';
+  document.getElementById("allCount").textContent = String(visibleActivities.length);
+  document.getElementById("listFooter").innerHTML = `<span>${visibleActivities.length ? `Showing ${visibleActivities.length} ${activeInboxFilter === "unread" ? "unread " : "recent "}update${visibleActivities.length === 1 ? "" : "s"}` : "Your latest workspace activity will appear here."}</span>`;
 }
 
 function updatePageHeading() {
@@ -284,9 +450,9 @@ function updatePageHeading() {
   } else if (activeView === "inbox") {
     title = "Inbox";
     pageTitle = "Your inbox";
-    subtitle = "Stay up to date with your workspace.";
+    subtitle = "A live feed of comments and completed work across your projects.";
     sectionTitle = "Recent activity";
-    description = "Tasks and conversations from across your projects.";
+    description = "Open an update to jump straight into its task.";
   }
   document.getElementById("breadcrumbCurrent").textContent = title;
   document.getElementById("pageTitle").innerHTML = pageTitle;
@@ -297,6 +463,7 @@ function updatePageHeading() {
 
 function render() {
   updatePageHeading();
+  document.getElementById("difficultyFilter").value = activeDifficulty;
   renderProjects();
   renderTasks();
   document.querySelectorAll(".main-nav .nav-item").forEach((item) => {
@@ -316,6 +483,10 @@ function toggleTask(id) {
   const task = state.tasks.find((item) => item.id === id);
   if (!task) return;
   if (task.status !== "done") {
+    if (isTaskBlocked(task)) {
+      showToast("Complete this task's prerequisites before marking it done.");
+      return;
+    }
     openCompletionReview(task.id);
     return;
   }
@@ -331,7 +502,7 @@ function toggleTask(id) {
 function openTaskDetails(id) {
   selectedTaskId = id;
   renderTaskDetails();
-  detailModal.showModal();
+  if (!detailModal.open) detailModal.showModal();
 }
 
 function renderTaskDetails() {
@@ -341,6 +512,11 @@ function renderTaskDetails() {
     return;
   }
   const projectOptions = state.projects.map((project) => `<option value="${escapeHtml(project.id)}"${project.id === task.project ? " selected" : ""}>${escapeHtml(project.name)}</option>`).join("");
+  const dependencies = (task.dependencies || []).map((id) => getTask(id)).filter(Boolean);
+  const blockedBy = dependencies.filter((dependency) => dependency.status !== "done");
+  const dependencySection = dependencies.length
+    ? `<section class="dependency-section"><h3>Prerequisites <span>${dependencies.length}</span></h3><ul>${dependencies.map((dependency) => `<li><button type="button" class="dependency-link${dependency.status === "done" ? " is-complete" : ""}" data-open-task="${escapeHtml(dependency.id)}">${escapeHtml(dependency.title)}</button><span>${dependency.status === "done" ? "Complete" : "Still open"}</span></li>`).join("")}</ul>${blockedBy.length ? `<p class="blocked-note">This task is blocked until ${blockedBy.length === 1 ? "its prerequisite is" : "all prerequisites are"} complete.</p>` : ""}</section>`
+    : "";
   const comments = task.comments.length ? task.comments.map((comment) => `<article class="comment"><span class="assignee assignee-${escapeHtml(comment.author)}">${escapeHtml(comment.author)}</span><div class="comment-body"><div class="comment-byline"><strong>${escapeHtml(getPerson(comment.author))}</strong><time datetime="${escapeHtml(comment.createdAt)}">${escapeHtml(formatCommentDate(comment.createdAt))}</time></div><p class="comment-text">${escapeHtml(comment.text)}</p></div></article>`).join("") : '<p class="comment-empty">No comments yet. Start the conversation.</p>';
   const review = task.completionReview;
   const reviewCard = review
@@ -351,10 +527,12 @@ function renderTaskDetails() {
     <p class="detail-description">${escapeHtml(task.description || "No description added yet.")}</p>
     <div class="detail-properties">
       <label class="detail-property"><span class="detail-property-label">Status</span><span class="detail-property-value"><select data-task-field="status" aria-label="Task status"><option value="todo"${task.status === "todo" ? " selected" : ""}>To do</option><option value="in-progress"${task.status === "in-progress" ? " selected" : ""}>In progress</option><option value="done"${task.status === "done" ? " selected" : ""}>${task.completionReview ? "Completed" : "Completed (add review)"}</option></select></span></label>
+      <label class="detail-property"><span class="detail-property-label">Difficulty</span><span class="detail-property-value"><select data-task-field="difficulty" aria-label="Task difficulty"><option value="beginner"${task.difficulty === "beginner" ? " selected" : ""}>Beginner</option><option value="intermediate"${task.difficulty === "intermediate" ? " selected" : ""}>Intermediate</option><option value="hard"${task.difficulty === "hard" ? " selected" : ""}>Hard</option></select></span></label>
       <label class="detail-property"><span class="detail-property-label">Project</span><span class="detail-property-value"><select data-task-field="project" aria-label="Task project">${projectOptions}</select></span></label>
       <div class="detail-property"><span class="detail-property-label">Assignee</span><span class="detail-property-value"><span class="assignee assignee-${escapeHtml(task.assignee)}">${escapeHtml(task.assignee)}</span>${escapeHtml(getPerson(task.assignee))}</span></div>
       <div class="detail-property"><span class="detail-property-label">Due date</span><span class="detail-property-value">${escapeHtml(formatDate(task.dueDate))}</span></div>
     </div>
+    ${dependencySection}
     ${task.estimatedMinutes ? `<p class="estimate-line">Estimated effort: <strong>${escapeHtml(task.estimatedMinutes)} minutes</strong></p>` : ""}
     ${reviewCard}
     <section class="comments-section"><h3 class="comments-heading">Comments <span>${task.comments.length}</span></h3><div class="comment-list" id="commentList">${comments}</div>
@@ -367,6 +545,7 @@ function openTaskForm(taskId = null) {
   const form = document.getElementById("taskForm");
   const task = taskId ? state.tasks.find((item) => item.id === taskId) : null;
   form.reset();
+  renderDependencyOptions(task?.dependencies || []);
   document.getElementById("taskModalTitle").textContent = task ? "Edit task" : "Create a task";
   document.getElementById("taskModalKicker").textContent = task ? "UPDATE YOUR WORKSPACE" : "ADD TO YOUR WORKSPACE";
   form.querySelector('[type="submit"]').textContent = task ? "Save changes" : "Create task";
@@ -377,6 +556,7 @@ function openTaskForm(taskId = null) {
     form.elements.dueDate.value = task.dueDate || "";
     form.elements.assignee.value = task.assignee;
     form.elements.priority.value = task.priority;
+    form.elements.difficulty.value = task.difficulty;
     form.elements.estimatedMinutes.value = task.estimatedMinutes || "";
   } else if (activeProject) {
     form.elements.project.value = activeProject;
@@ -426,6 +606,7 @@ async function importBackup(file) {
     activeProject = null;
     activeView = "overview";
     activeFilter = "all";
+    activeDifficulty = "all";
     searchInput.value = "";
     const saved = saveState();
     render();
@@ -443,6 +624,15 @@ function handleNewTask(event) {
   const formData = new FormData(event.currentTarget);
   const title = String(formData.get("title") || "").trim();
   if (!title) return;
+  const dependencies = [...new Set(formData.getAll("dependencies").map(String))].filter((id) => id !== editingTaskId);
+  if (dependencies.some((id) => !getTask(id))) {
+    showToast("A selected prerequisite no longer exists. Refresh the form and try again.");
+    return;
+  }
+  if (editingTaskId && dependencies.some((id) => hasDependencyPath(id, editingTaskId))) {
+    showToast("That prerequisite would create a dependency cycle. Choose another task.");
+    return;
+  }
   const taskFields = {
     title,
     description: String(formData.get("description") || "").trim(),
@@ -450,7 +640,9 @@ function handleNewTask(event) {
     dueDate: String(formData.get("dueDate") || ""),
     assignee: String(formData.get("assignee") || currentUser.id),
     priority: String(formData.get("priority") || "medium"),
-    estimatedMinutes: Number(formData.get("estimatedMinutes")) || null
+    difficulty: String(formData.get("difficulty") || "intermediate"),
+    estimatedMinutes: Number(formData.get("estimatedMinutes")) || null,
+    dependencies
   };
   const updatedTaskId = editingTaskId;
   if (editingTaskId) {
@@ -468,6 +660,7 @@ function handleNewTask(event) {
   activeProject = null;
   activeView = "overview";
   activeFilter = "all";
+  activeDifficulty = "all";
   searchInput.value = "";
   const saved = saveState();
   render();
@@ -502,13 +695,17 @@ document.querySelectorAll(".filter-tab").forEach((button) => button.addEventList
   activeFilter = button.dataset.filter;
   render();
 }));
+document.getElementById("difficultyFilter").addEventListener("change", (event) => {
+  activeDifficulty = event.currentTarget.value;
+  render();
+});
 
 document.querySelectorAll(".main-nav .nav-item").forEach((button) => button.addEventListener("click", () => {
   activeView = button.dataset.view;
   activeProject = null;
   activeFilter = "all";
+  activeDifficulty = "all";
   render();
-  if (activeView === "inbox") showToast("You're all caught up!");
 }));
 
 projectNav.addEventListener("click", (event) => {
@@ -517,6 +714,7 @@ projectNav.addEventListener("click", (event) => {
   activeProject = button.dataset.project;
   activeView = "overview";
   activeFilter = "all";
+  activeDifficulty = "all";
   render();
 });
 
@@ -527,14 +725,39 @@ taskList.addEventListener("click", (event) => {
     return;
   }
   const open = event.target.closest("[data-open-task]");
-  if (open) openTaskDetails(open.dataset.openTask);
+  if (open) {
+    const activityId = open.dataset.activityId;
+    if (activityId && !state.inboxRead.includes(activityId)) {
+      state.inboxRead.push(activityId);
+      saveState();
+      render();
+    }
+    openTaskDetails(open.dataset.openTask);
+    return;
+  }
   if (event.target.closest("[data-clear-filters]")) {
     activeProject = null;
     activeFilter = "all";
+    activeDifficulty = "all";
     activeView = "overview";
     searchInput.value = "";
     render();
   }
+});
+
+document.querySelectorAll("[data-inbox-filter]").forEach((button) => button.addEventListener("click", () => {
+  activeInboxFilter = button.dataset.inboxFilter;
+  render();
+}));
+
+document.getElementById("markAllReadButton").addEventListener("click", () => {
+  const activities = getInboxActivities();
+  const unreadCount = activities.filter((activity) => !state.inboxRead.includes(activity.id)).length;
+  if (!unreadCount) return;
+  state.inboxRead = activities.map((activity) => activity.id);
+  const saved = saveState();
+  render();
+  if (saved) showToast(`Marked ${unreadCount} update${unreadCount === 1 ? "" : "s"} as read.`);
 });
 
 taskList.addEventListener("keydown", (event) => {
@@ -553,6 +776,11 @@ document.getElementById("completionForm").addEventListener("submit", (event) => 
   if (!task) {
     completionModal.close();
     showToast("This task no longer exists. Refresh the page and try again.");
+    return;
+  }
+  if (isTaskBlocked(task)) {
+    completionModal.close();
+    showToast("Complete this task's prerequisites before marking it done.");
     return;
   }
   const formData = new FormData(event.currentTarget);
@@ -581,6 +809,7 @@ document.getElementById("resetButton").addEventListener("click", () => {
   activeProject = null;
   activeView = "overview";
   activeFilter = "all";
+  activeDifficulty = "all";
   searchInput.value = "";
   const saved = saveState();
   render();
@@ -590,6 +819,7 @@ document.getElementById("viewAllButton").addEventListener("click", () => {
   activeFilter = "all";
   activeProject = null;
   activeView = "overview";
+  activeDifficulty = "all";
   searchInput.value = "";
   render();
 });
@@ -609,6 +839,11 @@ detailModal.addEventListener("change", (event) => {
   const task = state.tasks.find((item) => item.id === selectedTaskId);
   if (!task) return;
   if (field === "status" && event.target.value === "done" && task.status !== "done") {
+    if (isTaskBlocked(task)) {
+      showToast("Complete this task's prerequisites before marking it done.");
+      renderTaskDetails();
+      return;
+    }
     renderTaskDetails();
     openCompletionReview(task.id);
     return;
@@ -624,19 +859,24 @@ detailModal.addEventListener("change", (event) => {
 });
 
 detailModal.addEventListener("click", (event) => {
-  if (event.target.closest("[data-edit-task]")) {
+  const prerequisite = event.target.closest(".dependency-link[data-open-task]");
+  if (prerequisite) {
+    openTaskDetails(prerequisite.dataset.openTask);
+  } else if (event.target.closest("[data-edit-task]")) {
     const taskId = selectedTaskId;
     detailModal.close();
     openTaskForm(taskId);
   } else if (event.target.closest("[data-delete-task]")) {
     const task = state.tasks.find((item) => item.id === selectedTaskId);
     if (!task || !window.confirm(`Delete "${task.title}" and its comments? This cannot be undone unless you have a backup.`)) return;
+    const affected = state.tasks.filter((item) => (item.dependencies || []).includes(task.id));
+    affected.forEach((item) => { item.dependencies = item.dependencies.filter((id) => id !== task.id); });
     state.tasks = state.tasks.filter((item) => item.id !== task.id);
     detailModal.close();
     selectedTaskId = null;
     const saved = saveState();
     render();
-    if (saved) showToast("Task deleted.");
+    if (saved) showToast(affected.length ? `Task deleted and removed from ${affected.length} prerequisite list${affected.length === 1 ? "" : "s"}.` : "Task deleted.");
   } else if (event.target.closest("[data-edit-review]")) {
     openCompletionReview(selectedTaskId);
   }
@@ -659,7 +899,14 @@ detailModal.addEventListener("submit", (event) => {
 
 document.getElementById("helpButton").addEventListener("click", () => showToast("Tip: click a task to see its details and join the conversation."));
 document.getElementById("footerHelp").addEventListener("click", () => showToast("You're using the Orbit starter workspace. Your work saves in this browser."));
-document.getElementById("notificationButton").addEventListener("click", () => showToast("You're all caught up!"));
+document.getElementById("notificationButton").addEventListener("click", () => {
+  activeView = "inbox";
+  activeProject = null;
+  activeFilter = "all";
+  activeInboxFilter = "unread";
+  searchInput.value = "";
+  render();
+});
 document.getElementById("upgradeButton").addEventListener("click", () => showToast("Plans are coming soon. Enjoy your free workspace!"));
 document.getElementById("profileButton").addEventListener("click", () => showToast("Signed in as Jamie Davis."));
 document.querySelector(".workspace-switcher").addEventListener("click", () => showToast("Studio North is your current workspace."));

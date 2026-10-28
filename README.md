@@ -18,7 +18,7 @@ Pushes to `main` deploy automatically. Manual deployments: **Run workflow**.
 
 Open **Challenge lab** or `lab.html`. Each track has nine required missions across three difficulty levels; bonus missions are optional.
 
-To finish a mission, select a repair, pass all regression checks, complete diagnosis, verification, and customer reply, then select **Finish mission & get debrief**. Written responses must be nonempty; accuracy is not validated.
+To finish a mission, select a repair, pass all regression checks, complete diagnosis, verification, and customer reply, then select **Finish mission & get debrief**. Written responses must be nonempty; accuracy is not validated. The learning path labels its three levels **Beginner**, **Intermediate**, and **Hard**.
 
 Progress, drafts, timers, and debriefs save locally and can be exported. Scoring: correctness 50, reasoning 15, verification 15, communication 15, speed 5. Text scores use heuristics; hints have no penalty.
 
@@ -41,6 +41,9 @@ node --test tests/lab-engine.test.cjs tests/lab-course.test.cjs
 ## Workspace
 
 - Create projects with **+** beside **Your Projects**; add or edit work with **New task** or **Edit**.
+- Set task **Prerequisites** to show work that must finish first. Tasks with unfinished prerequisites appear as **Blocked**; dependency cycles are prevented, and deleting a prerequisite removes it from dependent tasks.
+- **Overview** shows workspace metrics and tasks; **Inbox** is a separate activity feed for task comments and completions. Updates have persistent read state, unread filters and counts, a **Mark all as read** action, and links back to each task. The bell opens directly to unread updates.
+- Tasks can be planned at **Beginner**, **Intermediate**, or **Hard** difficulty, filtered by level, estimated, and linked to prerequisites. The starter workspace includes examples at every level across its projects; use **Reset demo** to reload the expanded sample workspace.
 - Complete tasks with the checkbox, then save ratings and an optional time review. Reopening clears completion ratings.
 - Add comments from task details; filter by project or status. Search: **Ctrl+K** / **⌘K**.
 - Use **Export backup** and **Import backup** for JSON backups. Import replaces current data; **Reset demo** restores sample data.

@@ -39,9 +39,10 @@
   function course() {
     const track = $('track').value;
     const summary = curriculum(state.completed, track);
+    const levelNames = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Hard' };
     $('curriculum').innerHTML = `<h2>${track === 'saas' ? 'SaaS' : 'CPaaS'} learning path</h2><p>${summary.done} / ${summary.total} missions complete${summary.complete ? ' - Track complete!' : ''}</p><progress max="${summary.total}" value="${summary.done}" aria-label="Track completion"></progress><div class="level-grid">${levels.map(level => {
       const p = curriculum(state.completed, track, level);
-      return `<button type="button" data-level="${level}" class="quiet ${level === $('difficulty').value ? 'current-level' : ''}" aria-pressed="${level === $('difficulty').value}">${level} - ${p.done}/${p.total}${p.complete ? ' - Complete' : ''}</button>`;
+      return `<button type="button" data-level="${level}" class="quiet ${level === $('difficulty').value ? 'current-level' : ''}" aria-pressed="${level === $('difficulty').value}">${levelNames[level]} - ${p.done}/${p.total}${p.complete ? ' - Complete' : ''}</button>`;
     }).join('')}</div><p id="saveStatus" role="status">${escape(storageWarning || 'Drafts and completed missions save automatically in this browser.')}</p>`;
   }
   const visibleMissions = () => missions.filter(m => (m.track || 'saas') === $('track').value && m.difficulty === $('difficulty').value && (!m.bonus || $('bonus').checked));

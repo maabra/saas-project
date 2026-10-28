@@ -37,7 +37,7 @@
           </button>
           <button class="nav-item" type="button" data-view="inbox">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 13h4l2 3h4l2-3h4"/></svg>
-            Inbox <span class="notification-dot" aria-label="Unread notifications"></span>
+            Inbox <span class="nav-count" id="inboxUnreadCount" hidden>0</span>
           </button>
         </nav>
 
@@ -74,8 +74,8 @@
             <button class="icon-button topbar-icon" type="button" id="helpButton" aria-label="Help and tutorials" title="Help and tutorials">
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.5 2.5 0 1 1 4.3 1.7c-1.2 1.1-1.9 1.5-1.9 3"/><path d="M12 17h.01"/></svg>
             </button>
-            <button class="icon-button topbar-icon notification-button" type="button" aria-label="Notifications" id="notificationButton">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><i></i>
+            <button class="icon-button topbar-icon notification-button" type="button" aria-label="Open inbox" id="notificationButton" title="Open inbox">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="notification-count" id="notificationCount" hidden>0</span>
             </button>
             <span class="topbar-divider"></span>
             <button class="avatar avatar-sage topbar-avatar" type="button" aria-label="Your profile">JD</button>
@@ -95,7 +95,7 @@
             </button>
           </section>
 
-          <section class="stats-grid" aria-label="Workspace summary">
+          <section class="stats-grid" id="workspaceSummary" aria-label="Workspace summary">
             <article class="stat-card">
               <div class="stat-top"><span>Open tasks</span><span class="stat-icon icon-lavender"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span></div>
               <div class="stat-bottom"><strong id="openStat">0</strong><span class="stat-caption"><span class="stat-trend">↗</span> Across all projects</span></div>
@@ -114,7 +114,7 @@
             </article>
           </section>
 
-          <section class="focus-card" aria-label="Weekly progress">
+          <section class="focus-card" id="weeklyProgress" aria-label="Weekly progress">
             <div class="focus-copy">
               <span class="focus-kicker"><span class="sparkle">✦</span> YOUR WEEK AT A GLANCE</span>
               <h2>A little progress goes a long way.</h2>
@@ -136,18 +136,34 @@
               <div><h2 id="taskSectionTitle">Your tasks</h2><p id="taskSectionDescription">A good day starts with a clear plan.</p></div>
               <button class="button button-quiet" type="button" id="viewAllButton">View all tasks <span aria-hidden="true">→</span></button>
             </div>
-            <div class="task-toolbar">
+            <div class="task-toolbar" id="taskToolbar">
               <div class="filter-tabs" role="tablist" aria-label="Filter tasks">
                 <button class="filter-tab selected" type="button" data-filter="all" role="tab" aria-selected="true">All <span id="allCount">0</span></button>
+                <button class="filter-tab" type="button" data-filter="blocked" role="tab" aria-selected="false">Blocked</button>
                 <button class="filter-tab" type="button" data-filter="in-progress" role="tab" aria-selected="false">In progress</button>
                 <button class="filter-tab" type="button" data-filter="todo" role="tab" aria-selected="false">To do</button>
                 <button class="filter-tab" type="button" data-filter="done" role="tab" aria-selected="false">Completed</button>
               </div>
+              <label class="difficulty-filter-label" for="difficultyFilter">Level
+                <select id="difficultyFilter" class="difficulty-filter" aria-label="Filter tasks by difficulty">
+                  <option value="all">All levels</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </label>
               <label class="search-box">
                 <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.8" cy="8.8" r="5.8"/><path d="m13 13 4 4"/></svg>
                 <input id="taskSearch" type="search" placeholder="Search tasks" aria-label="Search tasks">
                 <kbd>⌘ K</kbd>
               </label>
+            </div>
+            <div class="inbox-toolbar" id="inboxToolbar" hidden>
+              <div class="inbox-filters" role="group" aria-label="Filter inbox updates">
+                <button class="inbox-filter selected" type="button" data-inbox-filter="all" aria-pressed="true">All updates</button>
+                <button class="inbox-filter" type="button" data-inbox-filter="unread" aria-pressed="false">Unread <span id="inboxUnreadLabel">0 unread</span></button>
+              </div>
+              <button class="text-action" type="button" id="markAllReadButton">Mark all as read</button>
             </div>
             <div class="task-list" id="taskList"></div>
             <div class="list-footer" id="listFooter"></div>
@@ -176,8 +192,18 @@
           <div><label class="field-label" for="taskAssignee">Assignee</label><select class="text-input" id="taskAssignee" name="assignee"><option value="JD">Jamie Davis</option><option value="AL">Alex Lee</option><option value="MK">Morgan Kim</option><option value="SC">Sam Chen</option></select></div>
           <div><label class="field-label" for="taskPriority">Priority</label><select class="text-input" id="taskPriority" name="priority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></div>
         </div>
+        <label class="field-label" for="taskDifficulty">Difficulty</label>
+        <select class="text-input" id="taskDifficulty" name="difficulty" aria-describedby="difficultyHelp">
+          <option value="beginner">Beginner — clear, focused work</option>
+          <option value="intermediate" selected>Intermediate — several steps or collaborators</option>
+          <option value="hard">Hard — analysis, risk, or cross-team decisions</option>
+        </select>
+        <p class="field-help" id="difficultyHelp">Choose the level of planning and problem-solving, not the task’s priority.</p>
         <label class="field-label" for="taskEstimate">Estimated time <span>Optional, minutes</span></label>
         <input class="text-input" id="taskEstimate" name="estimatedMinutes" type="number" min="1" max="100000" placeholder="e.g. 60">
+        <label class="field-label" for="taskDependencies">Prerequisites <span>Optional, select all that must finish first</span></label>
+        <select class="text-input dependency-select" id="taskDependencies" name="dependencies" multiple size="4" aria-describedby="dependencyHelp"></select>
+        <p class="field-help" id="dependencyHelp">Tasks stay blocked until every prerequisite is complete. Dependency cycles are not allowed.</p>
         <div class="modal-actions"><button class="button button-quiet" type="button" data-close>Cancel</button><button class="button button-primary" type="submit">Create task</button></div>
       </form>
     </dialog>
